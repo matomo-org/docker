@@ -39,6 +39,19 @@ web:
 ...
 ```
 
+## Installation
+
+Once started, you'll arrive at the configuration wizzard.
+At the `Database Setup` step, please enter the following:
+  -  Database Server: `db`
+  -  Login: `root`
+  -  Password: MYSQL_ROOT_PASSWORD (from your `.env` file)
+  -  Database Name: piwik (or you can choose)
+ 
+And leave the rest as default.
+
+Then you can continue the installation with the super user.
+
 ## Backup
 
 In order to backup, just run the `./BACKUP` script. And copy all the data to a safe place.
