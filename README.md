@@ -25,7 +25,7 @@ docker-compose up
 
 You can now access your instance on the port 80 of the IP of your machine.
 
-## Accees it from Internet
+## Access it from Internet
 
 We recommend the usage of SSL, so the easiest is to modify the `nginx.conf` file.
 
@@ -41,7 +41,7 @@ web:
 
 ## Installation
 
-Once started, you'll arrive at the configuration wizzard.
+Once started, you'll arrive at the configuration wizard.
 At the `Database Setup` step, please enter the following:
   -  Database Server: `db`
   -  Login: `root`
