@@ -19,7 +19,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --w
 
 RUN pecl install APCu-beta geoip
 
-ENV PIWIK_VERSION 2.14.3
+ENV PIWIK_VERSION 2.15.0
 
 VOLUME /var/www/html/
 
