@@ -1,5 +1,7 @@
 # Piwik
 
+[![Build Status](https://travis-ci.org/piwik/docker-piwik.svg?branch=master)](https://travis-ci.org/piwik/docker-piwik)
+
 Piwik is the leading open-source analytics platform that gives you more than just powerful analytics:
  - Free open-source software
  - 100% data ownership
