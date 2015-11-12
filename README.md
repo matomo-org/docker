@@ -47,7 +47,7 @@ At the `Database Setup` step, please enter the following:
   -  Login: `root`
   -  Password: MYSQL_ROOT_PASSWORD (from your `.env` file)
   -  Database Name: piwik (or you can choose)
- 
+
 And leave the rest as default.
 
 Then you can continue the installation with the super user.
