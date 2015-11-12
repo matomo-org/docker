@@ -47,7 +47,7 @@ At the `Database Setup` step, please enter the following:
   -  Login: `root`
   -  Password: MYSQL_ROOT_PASSWORD (from your `.env` file)
   -  Database Name: piwik (or you can choose)
-
+ 
 And leave the rest as default.
 
 Then you can continue the installation with the super user.
@@ -55,3 +55,12 @@ Then you can continue the installation with the super user.
 ## Backup
 
 In order to backup, just run the `./BACKUP` script. And copy all the data to a safe place.
+
+## Contribute
+
+Pull requests are very welcome!
+
+We'd love to hear your feedback and suggestions in the issue tracker: [github.com/piwik/docker-piwik/issues](https://github.com/piwik/docker-piwik/issues). 
+
+
+
