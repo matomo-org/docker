@@ -17,7 +17,7 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 0xb5dbd5925590a237
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr \
  && docker-php-ext-install gd mbstring mysql pdo_mysql zip
 
-RUN pecl install APCu-beta geoip
+RUN pecl install APCu geoip
 
 ENV PIWIK_VERSION 2.15.0
 
