@@ -10,8 +10,6 @@ app:
     - db
   volumes:
     - ./config:/var/www/html/config
-  env_file:
-    - ./.env
 web:
   image: nginx
   volumes:
