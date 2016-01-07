@@ -10,6 +10,8 @@ app:
     - db
   volumes:
     - ./config:/var/www/html/config
+    - ./ssmtp.conf:/etc/ssmtp/ssmtp.conf
+    - ./revaliases:/etc/ssmtp/revaliases
 web:
   image: nginx
   volumes:

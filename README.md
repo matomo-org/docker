@@ -54,6 +54,19 @@ And leave the rest as default.
 
 Then you can continue the installation with the super user.
 
+## Emails
+
+The recommended way is to use the `ssmtp` shipped with the image.
+To use it, just run:
+
+```
+export MAIL_USER=myname@gmail.com
+export MAIL_PASS=mypass
+export MAIL_HOST=mail.google.com
+export MAIL_PORT=587
+./install
+```
+
 ## Backup
 
 In order to backup, just run the `./BACKUP` script. And copy all the data to a safe place.
