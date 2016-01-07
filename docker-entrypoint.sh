@@ -6,6 +6,4 @@ if [ ! -e '/var/www/html/piwik.php' ]; then
 	chown -R www-data /var/www/html
 fi
 
-chfn -f 'Piwik Admin' www-data
-
 exec "$@"

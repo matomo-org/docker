@@ -29,7 +29,8 @@ RUN curl -fsSL -o piwik.tar.gz \
       "https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz.asc" \
  && gpg --verify piwik.tar.gz.asc \
  && tar -xzf piwik.tar.gz -C /usr/src/ \
- && rm piwik.tar.gz piwik.tar.gz.asc
+ && rm piwik.tar.gz piwik.tar.gz.asc \
+ && chfn -f 'Piwik Admin' www-data
 
 COPY php.ini /usr/local/etc/php/php.ini
 
