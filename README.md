@@ -77,5 +77,8 @@ Pull requests are very welcome!
 
 We'd love to hear your feedback and suggestions in the issue tracker: [github.com/piwik/docker-piwik/issues](https://github.com/piwik/docker-piwik/issues). 
 
+## GeoIP
 
+This product includes GeoLite data created by MaxMind, available from
+[http://www.maxmind.com](http://www.maxmind.com).
 
