@@ -3,7 +3,6 @@ FROM php:5.6-fpm
 MAINTAINER pierre@piwik.org
 
 RUN apt-get update && apt-get install -y \
-      cron \
       libjpeg-dev \
       libfreetype6-dev \
       libgeoip-dev \

@@ -6,4 +6,9 @@ if [ ! -e '/var/www/html/piwik.php' ]; then
 	chown -R www-data /var/www/html
 fi
 
+while /bin/true; do
+  su -s "/bin/bash" -c "/usr/local/bin/php /var/www/html/console core:archive" www-data
+  sleep 3600
+done &
+
 exec "$@"

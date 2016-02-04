@@ -1,2 +1,0 @@
-SHELL=/bin/bash
-*/1 * * * * www-data /usr/local/bin/php /var/www/html/console core:archive >> /dev/null 2>&1
