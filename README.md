@@ -18,15 +18,8 @@ Piwik is the leading open-source analytics platform that gives you more than jus
 docker run --link some-mysql:mysql -d piwik
 ```
 
-For testing purpose, you might want to be able to access the instance from the host without the container's IP, standard port mappings can be used:
-
-```bash
-docker run --link some-mysql:mysql -p 8080:80 -d piwik
-```
-
-Then, access it via `http://localhost:8080` or `http://host-ip:8080` in a browser.
-
-For production, we recommend the use of TLS.
+Now you can get access to fpm running on port 9000 inside the container.
+If you want to access it from the Internets, we recommend using a reverse proxy in front. You can find more information on that on the [docker-compose](#docker-compose) section.
 
 ## Via docker-compose
 
