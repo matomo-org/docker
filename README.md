@@ -15,7 +15,7 @@ Piwik is the leading open-source analytics platform that gives you more than jus
 # How to use this image
 
 ```bash
-docker run --link some-mysql:mysql -d piwik
+docker run --link some-mysql:db -d piwik
 ```
 
 Now you can get access to fpm running on port 9000 inside the container.
@@ -27,7 +27,7 @@ You can use a setup that is used in production at [IndieHosters/piwik](https://g
 
 ## Installation
 
-Once started, you'll arrive at the configuration wizzard. At the `Database Setup` step, please enter the following:
+Once started, you'll arrive at the configuration wizard. At the `Database Setup` step, please enter the following:
 
 - Database Server: `db`
 - Login: `root`
