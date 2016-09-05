@@ -12,22 +12,27 @@ Piwik is the leading open-source analytics platform that gives you more than jus
 
 ![logo](https://rawgit.com/piwik/docker-piwik/master/logo.svg)
 
-# How to use this image
+## Usage
+
+In keeping with a 'pure' micro-services approach, this image runs a Piwik service only (in the form of FastCGI). Because of that it **must** be used with companion containers which provide a database for data storage and HTTP to FastCGI proxy/translation services for the user interface.
+
+## Runtime
+
+You can run the Piwik container and service like so:
 
 ```bash
-docker run --link some-mysql:db -d piwik
+docker run -d --link some-mysql:db piwik
 ```
 
-Now you can get access to fpm running on port 9000 inside the container.
-If you want to access it from the Internets, we recommend using a reverse proxy in front. You can find more information on that on the [docker-compose](#docker-compose) section.
+This assumes you've already launched a suitable MySQL or MariaDB database container.
 
-## Via docker-compose
+You'll now need to use a suitable reverse proxy to access the user interface; which is available on TCP port 9000. Nginx provides the necessary functions for translation between HTTP and FastCGI and you can find a suitable configuration file [here](https://github.com/indiehosters/piwik/blob/master/nginx.conf).
 
-You can use a setup that is used in production at [IndieHosters/piwik](https://github.com/indiehosters/piwik).
+To save time putting together all these parts, you might find it easier if you use the docker-compose setup detailed at [IndieHosters/piwik](https://github.com/indiehosters/piwik).
 
-## Installation
+## Piwik Installation
 
-Once started, you'll arrive at the configuration wizard. At the `Database Setup` step, please enter the following:
+Once you're up and running, you'll arrive at the configuration wizard page. If you're using the compose file, at the `Database Setup` step, please enter the following:
 
 - Database Server: `db`
 - Login: `root`
