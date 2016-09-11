@@ -7,12 +7,14 @@ RUN apt-get update && apt-get install -y \
       libfreetype6-dev \
       libgeoip-dev \
       libpng12-dev \
+      libldap2-dev \
       ssmtp \
       zip \
  && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr \
- && docker-php-ext-install gd mbstring mysql pdo_mysql zip
+	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+ 	&& docker-php-ext-install -j$(nproc) gd mbstring mysql pdo_mysql zip ldap
 
 RUN pecl install APCu geoip
 
