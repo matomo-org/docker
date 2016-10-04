@@ -18,7 +18,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --w
 
 RUN pecl install APCu geoip
 
-ENV PIWIK_VERSION 2.16.2
+ENV PIWIK_VERSION 2.16.5
 
 RUN curl -fsSL -o piwik.tar.gz \
       "https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz" \
