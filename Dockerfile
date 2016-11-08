@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
- 	&& docker-php-ext-install -j$(nproc) gd mbstring mysql pdo_mysql zip ldap
+ 	&& docker-php-ext-install -j$(nproc) gd mbstring mysql pdo_mysql zip ldap opcache
 
 RUN pecl install APCu geoip
 
