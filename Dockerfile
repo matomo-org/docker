@@ -37,9 +37,19 @@ RUN curl -fsSL -o /usr/src/piwik/misc/GeoIPCity.dat.gz http://geolite.maxmind.co
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
+# make /var/www/html world-writeable to allow php-fpm to run as random uid
+RUN mkdir -p /var/www/html \
+    && chown www-data:www-data /var/www/html \
+    && chmod a+rwx /var/www/html
+
+# test whether www-data has indeed uid 33
+RUN test "$(id -u www-data)" -eq 33
+
 # WORKDIR is /var/www/html (inherited via "FROM php")
 # "/entrypoint.sh" will populate it at container startup from /usr/src/piwik
 VOLUME /var/www/html
 
+USER 33
+
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["php-fpm"]
+CMD ["/usr/local/sbin/php-fpm"]
