@@ -32,7 +32,7 @@ RUN curl -fsSL -o piwik.tar.gz \
 
 COPY php.ini /usr/local/etc/php/php.ini
 
-RUN curl -fsSL -o /usr/src/piwik/misc/GeoIPCity.dat.gz http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
+RUN curl -fsSL -o /usr/src/piwik/misc/GeoIPCity.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
  && gunzip /usr/src/piwik/misc/GeoIPCity.dat.gz
 
 COPY docker-entrypoint.sh /entrypoint.sh
