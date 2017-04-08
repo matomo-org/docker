@@ -9,8 +9,10 @@ install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
 
 script:
-  - travis_retry docker build -t piwik .
-  - ~/official-images/test/run.sh piwik
+  - travis_retry docker build -t piwik:fpm fpm
+  - ~/official-images/test/run.sh piwik:fpm
+  - travis_retry docker build -t piwik:apache apache
+  - ~/official-images/test/run.sh piwik:apache
 
 after_script:
   - docker images
