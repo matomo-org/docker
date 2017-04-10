@@ -67,8 +67,9 @@ for variant in "${variants[@]}"; do
 	fi
 
 	cat <<-EOE
+
 		Tags: $(join ', ' "${variantAliases[@]}")
 		GitCommit: $commit
-		Directory: $version/$variant
+		Directory: $variant
 	EOE
 done
