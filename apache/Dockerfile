@@ -17,6 +17,10 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --w
 
 RUN pecl install APCu geoip
 
+RUN sed -i -r "s/Options Indexes FollowSymLinks/Options FollowSymLinks/" /etc/apache2/apache2.conf \
+        && sed -i -r "s/ServerTokens OS/ServerTokens Prod/" /etc/apache2/conf-enabled/security.conf \ 
+        && sed -i -r "s/ServerSignature On/ServerSignature Off/" /etc/apache2/conf-enabled/security.conf 
+
 ENV PIWIK_VERSION 3.0.3
 
 RUN curl -fsSL -o piwik.tar.gz \
