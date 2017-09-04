@@ -1,4 +1,4 @@
-FROM php:7-fpm
+FROM php:7.1-fpm
 
 MAINTAINER pierre@piwik.org
 
@@ -15,7 +15,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --w
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
  	&& docker-php-ext-install -j$(nproc) gd mbstring pdo_mysql zip ldap opcache
 
-RUN pecl install APCu geoip
+RUN pecl install APCu geoip-1.1.1
 
 ENV PIWIK_VERSION 3.0.4
 
