@@ -20,7 +20,7 @@ RUN pecl install APCu geoip redis \
 
 RUN docker-php-ext-enable redis
 
-ENV PIWIK_VERSION 3.2.1
+ENV PIWIK_VERSION 3.3.0
 
 RUN curl -fsSL -o piwik.tar.gz \
       "https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz" \
