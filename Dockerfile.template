@@ -2,41 +2,74 @@ FROM php:5.6-%%VARIANT%%
 
 MAINTAINER pierre@piwik.org
 
-RUN apt-get update && apt-get install -y \
-      libjpeg-dev \
-      libfreetype6-dev \
-      libgeoip-dev \
-      libpng12-dev \
-      libldap2-dev \
-      zip \
- && rm -rf /var/lib/apt/lists/*
-
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
- 	&& docker-php-ext-install -j$(nproc) gd mbstring mysql pdo_mysql zip ldap opcache
-
-RUN pecl install APCu geoip redis \
-  && rm -rf /tmp/pear
-
-RUN docker-php-ext-enable redis
+RUN set -ex; \
+	\
+	savedAptMark="$(apt-mark showmanual)"; \
+	\
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		libfreetype6-dev \
+		libgeoip-dev \
+		libjpeg-dev \
+		libldap2-dev \
+		libpng12-dev \
+	; \
+	\
+	docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr; \
+	docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/; \
+	docker-php-ext-install \
+		gd \
+		ldap \
+		mbstring \
+		mysql \
+		opcache \
+		pdo_mysql \
+		zip \
+	; \
+	\
+	pecl install \
+		APCu-4.0.11 \
+		geoip-1.1.1 \
+		redis-3.1.6 \
+	; \
+	\
+	docker-php-ext-enable \
+		apcu \
+		geoip \
+		redis \
+	; \
+	\
+# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
+	apt-mark auto '.*' > /dev/null; \
+	apt-mark manual $savedAptMark; \
+	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
+		| awk '/=>/ { print $3 }' \
+		| sort -u \
+		| xargs -r dpkg-query -S \
+		| cut -d: -f1 \
+		| sort -u \
+		| xargs -rt apt-mark manual; \
+	\
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*
 
 ENV PIWIK_VERSION %%VERSION%%
 
 RUN curl -fsSL -o piwik.tar.gz \
-      "https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz" \
- && curl -fsSL -o piwik.tar.gz.asc \
-      "https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz.asc" \
- && export GNUPGHOME="$(mktemp -d)" \
- && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237 \
- && gpg --batch --verify piwik.tar.gz.asc piwik.tar.gz \
- && rm -r "$GNUPGHOME" piwik.tar.gz.asc \
- && tar -xzf piwik.tar.gz -C /usr/src/ \
- && rm piwik.tar.gz
+		"https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz"; \
+	curl -fsSL -o piwik.tar.gz.asc \
+		"https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz.asc"; \
+	export GNUPGHOME="$(mktemp -d)"; \
+	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
+	gpg --batch --verify piwik.tar.gz.asc piwik.tar.gz; \
+	rm -r "$GNUPGHOME" piwik.tar.gz.asc; \
+	tar -xzf piwik.tar.gz -C /usr/src/; \
+	rm piwik.tar.gz
 
 COPY php.ini /usr/local/etc/php/php.ini
 
-RUN curl -fsSL -o /usr/src/piwik/misc/GeoIPCity.dat.gz http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
- && gunzip /usr/src/piwik/misc/GeoIPCity.dat.gz
+RUN curl -fsSL -o /usr/src/piwik/misc/GeoIPCity.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz; \
+	gunzip /usr/src/piwik/misc/GeoIPCity.dat.gz
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
