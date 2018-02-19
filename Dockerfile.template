@@ -15,20 +15,20 @@ RUN set -ex; \
 		libpng12-dev \
 	; \
 	\
+	debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
 	docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr; \
-	docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/; \
+	docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
 	docker-php-ext-install \
 		gd \
 		ldap \
-		mbstring \
-		mysql \
+		mysqli \
 		opcache \
 		pdo_mysql \
 		zip \
 	; \
 	\
 	pecl install \
-		APCu-4.0.11 \
+		APCu-5.1.9 \
 		geoip-1.1.1 \
 		redis-3.1.6 \
 	; \
