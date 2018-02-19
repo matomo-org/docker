@@ -1,4 +1,4 @@
-FROM php:5.6-fpm
+FROM php:7.1-fpm
 
 MAINTAINER pierre@piwik.org
 
@@ -8,15 +8,15 @@ RUN apt-get update && apt-get install -y \
       libgeoip-dev \
       libpng12-dev \
       libldap2-dev \
-      python --no-install-recommends \
       zip \
  && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
- 	&& docker-php-ext-install -j$(nproc) gd mbstring mysql pdo_mysql zip ldap opcache
+ 	&& docker-php-ext-install -j$(nproc) gd mbstring pdo_mysql zip ldap opcache
 
-RUN pecl install APCu geoip redis \
+
+RUN pecl install APCu geoip-1.1.1 redis \
   && rm -rf /tmp/pear
 
 RUN docker-php-ext-enable redis
