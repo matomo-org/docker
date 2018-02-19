@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
       libgeoip-dev \
       libpng12-dev \
       libldap2-dev \
+      python --no-install-recommends \
       zip \
  && rm -rf /var/lib/apt/lists/*
 
