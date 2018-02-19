@@ -23,7 +23,6 @@ RUN set -ex; \
 		gd \
 		ldap \
 		mbstring \
-		mysql \
 		opcache \
 		pdo_mysql \
 		zip \
