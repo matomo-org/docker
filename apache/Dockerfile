@@ -2,13 +2,13 @@ FROM php:7.1-apache
 
 MAINTAINER pierre@piwik.org
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
       libjpeg-dev \
       libfreetype6-dev \
       libgeoip-dev \
       libpng12-dev \
       libldap2-dev \
-      python --no-install-recommends \
+      python \
       zip \
  && rm -rf /var/lib/apt/lists/*
 
