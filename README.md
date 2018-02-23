@@ -1,6 +1,6 @@
 # Piwik
 
-[![Build Status](https://travis-ci.org/piwik/docker-piwik.svg?branch=master)](https://travis-ci.org/piwik/docker-piwik)
+[![Build Status](https://travis-ci.org/matomo-org/docker-piwik.svg?branch=master)](https://travis-ci.org/matomo-org/docker-piwik)
 
 Piwik is the leading open-source analytics platform that gives you more than just powerful analytics:
 
