@@ -48,7 +48,10 @@ RUN set -ex; \
 		| xargs -rt apt-mark manual; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*; \
+    test "$(id -u www-data)" -eq 33; \
+    echo "setting default permissions for /var/www/html directory"; \
+    install -dm 0777 -o www-data -g www-data /var/www/html
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
