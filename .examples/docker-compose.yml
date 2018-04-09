@@ -1,0 +1,26 @@
+db:
+  image: mariadb:latest
+  volumes:
+    - ./mysql/runtime2:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD
+app:
+  image: piwik:fpm
+  links:
+    - db
+  volumes:
+    - ./config:/var/www/html/config:rw
+    - /home/your-logs-folder:/var/www/html/logs
+  env_file:
+    - ./matomo.env
+web:
+  image: nginx
+  volumes:
+    - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  links:
+    - app
+  volumes_from:
+    - app
+  environment:
+    - VIRTUAL_HOST
+
