@@ -1,7 +1,7 @@
 # Matomo (formerly Piwik)
 
 [![Build Status](https://travis-ci.org/matomo-org/docker.svg?branch=master)](https://travis-ci.org/matomo-org/docker)
-
+<img align="right" width="300px" src="https://matomo.org/wp-content/themes/website-child/assets/img/media/matomo.png" alt="Matomo logo">
 [Matomo](https://matomo.org/) (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics:
 
 - Free open-source software
@@ -9,8 +9,6 @@
 - User privacy protection
 - User-centric insights
 - Customisable and extensible
-
-![logo](https://matomo.org/wp-content/uploads/2018/01/matomo_logo_black_on_white.png)
 
 ## Usage
 
@@ -40,6 +38,15 @@ Once you're up and running, you'll arrive at the configuration wizard page. If y
 And leave the rest as default.
 
 Then you can continue the installation with the super user.
+
+## Docker-composer examples and log import instructions
+
+A minimal set-up using docker-compose is available in the [.examples folder](.examples/docker-compose.yml), a more complete [example can be found at IndieHosters/piwik](https://github.com/libresh/compose-matomo/blob/master/docker-compose.yml).
+
+If you want to use the import logs script, you can then run the following container as needed, in order to execute the python import logs script:
+```
+docker run --rm --volumes-from="matomo_app_1" --link matomo_app_1 python:2-alpine python /var/www/html/misc/log-analytics/import_logs.py --url=http://ip.of.your.piwik --login=yourlogin --password=yourpassword --idsite=1 --recorders=4 /var/www/html/logs/access.log
+```
 
 ## Contribute
 
