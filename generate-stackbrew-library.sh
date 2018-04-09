@@ -27,9 +27,9 @@ dockerfileCommit() {
 
 # Header.
 cat <<-EOH
-# This file is generated via https://github.com/piwik/docker-piwik/blob/$(fileCommit "$self")/$self
+# This file is generated via https://github.com/matomo-org/docker/blob/$(fileCommit "$self")/$self
 Maintainers: Pierre Ozoux <pierre@piwik.org> (@pierreozoux)
-GitRepo: https://github.com/piwik/docker-piwik.git
+GitRepo: https://github.com/matomo-org/docker.git
 EOH
 
 # prints "$2$1$3$1...$N"
@@ -40,7 +40,7 @@ join() {
 }
 
 latest="$(
-	git ls-remote --tags https://github.com/piwik/piwik.git \
+	git ls-remote --tags https://github.com//matomo-org/matomo.git \
 		| cut -d/ -f3 \
 		| grep -vE -- '-rc|-b' \
 		| sort -V \
@@ -52,7 +52,7 @@ variants=( "${variants[@]%/}" )
 
 for variant in "${variants[@]}"; do
 	commit="$(dockerfileCommit "$variant")"
-	fullversion="$(git show "$commit":"$variant/Dockerfile" | awk '$1 == "ENV" && $2 == "PIWIK_VERSION" { print $3; exit }')"
+	fullversion="$(git show "$commit":"$variant/Dockerfile" | awk '$1 == "ENV" && $2 == "MATOMO_VERSION" { print $3; exit }')"
 
 	versionAliases=( "$fullversion" "${fullversion%.*}" "${fullversion%.*.*}" )
 	if [ "$fullversion" = "$latest" ]; then
