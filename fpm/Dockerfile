@@ -1,6 +1,6 @@
 FROM php:7.1-fpm
 
-MAINTAINER pierre@piwik.org
+LABEL maintainer="pierre@piwik.org"
 
 RUN set -ex; \
 	\
@@ -53,13 +53,13 @@ RUN set -ex; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV PIWIK_VERSION 3.3.0
+ENV MATOMO_VERSION 3.4.0
 
 RUN set -ex; \
 	curl -fsSL -o piwik.tar.gz \
-		"https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz"; \
+		"https://builds.matomo.org/piwik-${MATOMO_VERSION}.tar.gz"; \
 	curl -fsSL -o piwik.tar.gz.asc \
-		"https://builds.piwik.org/piwik-${PIWIK_VERSION}.tar.gz.asc"; \
+		"https://builds.matomo.org/piwik-${MATOMO_VERSION}.tar.gz.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
 	gpg --batch --verify piwik.tar.gz.asc piwik.tar.gz; \
