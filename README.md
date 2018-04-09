@@ -1,7 +1,7 @@
 # Matomo (formerly Piwik)
 
 [![Build Status](https://travis-ci.org/matomo-org/docker.svg?branch=master)](https://travis-ci.org/matomo-org/docker)
-
+<img align="right" width="300px" src="https://matomo.org/wp-content/themes/website-child/assets/img/media/matomo.png" alt="Matomo logo">
 [Matomo](https://matomo.org/) (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics:
 
 - Free open-source software
@@ -9,8 +9,6 @@
 - User privacy protection
 - User-centric insights
 - Customisable and extensible
-
-![logo](https://matomo.org/wp-content/uploads/2018/01/matomo_logo_black_on_white.png)
 
 ## Usage
 
