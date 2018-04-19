@@ -52,8 +52,7 @@ RUN set -ex; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	apt-get install -y --no-install-recommends \
-		python2.7 \
-	; \
+		python2.7 ; \
 	rm -rf /var/lib/apt/lists/*
 
 ENV MATOMO_VERSION 3.4.0
