@@ -56,7 +56,7 @@ join() {
 }
 
 latest="$(
-	git ls-remote --tags https://github.com//matomo-org/matomo.git \
+	git ls-remote --tags https://github.com/matomo-org/matomo.git \
 		| cut -d/ -f3 \
 		| grep -vE -- '-rc|-b' \
 		| sort -V \
