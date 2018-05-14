@@ -9,6 +9,8 @@ install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
 
 script:
+  - travis_retry docker build -t piwik:fpm-alpine fpm-alpine
+  - ~/official-images/test/run.sh piwik:fpm-alpine
   - travis_retry docker build -t piwik:fpm fpm
   - ~/official-images/test/run.sh piwik:fpm
   - travis_retry docker build -t piwik:apache apache
