@@ -18,6 +18,8 @@ set -x
 
 for variant in apache fpm; do
 	cp Dockerfile.template "$variant/Dockerfile"
+	cp docker-entrypoint.sh "$variant/docker-entrypoint.sh"
+	cp php.ini "$variant/php.ini"
 	sed -ri -e '
 		s/%%VARIANT%%/'"$variant"'/;
 		s/%%VERSION%%/'"$latest"'/;
