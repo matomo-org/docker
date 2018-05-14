@@ -28,7 +28,7 @@ RUN set -ex; \
 	; \
 	\
 	pecl install \
-		APCu-5.1.9 \
+		APCu-5.1.11 \
 		geoip-1.1.1 \
 		redis-3.1.6 \
 	; \
