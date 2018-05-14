@@ -67,7 +67,7 @@ RUN set -ex; \
 	tar -xzf piwik.tar.gz -C /usr/src/; \
 	rm piwik.tar.gz
 
-COPY php.ini /usr/local/etc/php/php.ini
+COPY php.ini /usr/local/etc/php/conf.d/php-piwik.ini
 
 RUN set -ex; \
 	curl -fsSL -o /usr/src/piwik/misc/GeoIPCity.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz; \
