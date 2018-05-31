@@ -12,7 +12,7 @@ RUN set -ex; \
 		libgeoip-dev \
 		libjpeg-dev \
 		libldap2-dev \
-		libpng12-dev \
+		libpng-dev \
 	; \
 	\
 	debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
@@ -53,9 +53,18 @@ RUN set -ex; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV MATOMO_VERSION 3.5.0
+ENV MATOMO_VERSION 3.5.1
 
 RUN set -ex; \
+	fetchDeps=" \
+		dirmngr \
+		gnupg \
+	"; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		$fetchDeps \
+	; \
+	\
 	curl -fsSL -o piwik.tar.gz \
 		"https://builds.matomo.org/piwik-${MATOMO_VERSION}.tar.gz"; \
 	curl -fsSL -o piwik.tar.gz.asc \
@@ -65,7 +74,9 @@ RUN set -ex; \
 	gpg --batch --verify piwik.tar.gz.asc piwik.tar.gz; \
 	rm -r "$GNUPGHOME" piwik.tar.gz.asc; \
 	tar -xzf piwik.tar.gz -C /usr/src/; \
-	rm piwik.tar.gz
+	rm piwik.tar.gz; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $fetchDeps; \
+	rm -rf /var/lib/apt/lists/*
 
 COPY php.ini /usr/local/etc/php/conf.d/php-piwik.ini
 
