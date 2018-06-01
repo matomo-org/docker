@@ -27,11 +27,10 @@ RUN set -ex; \
 		zip \
 	; \
 	\
-	pecl install \
-		APCu-5.1.11 \
-		geoip-1.1.1 \
-		redis-3.1.6 \
-	; \
+# pecl will claim success even if one install fails, so we need to perform each install separately
+	pecl install APCu-5.1.11; \
+	pecl install geoip-1.1.1; \
+	pecl install redis-3.1.6; \
 	\
 	docker-php-ext-enable \
 		apcu \
