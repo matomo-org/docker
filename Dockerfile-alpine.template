@@ -61,7 +61,8 @@ RUN set -ex; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
 	gpg --batch --verify piwik.tar.gz.asc piwik.tar.gz; \
-	rm -r "$GNUPGHOME" piwik.tar.gz.asc; \
+	gpgconf --kill all; \
+	rm -rf "$GNUPGHOME" piwik.tar.gz.asc; \
 	tar -xzf piwik.tar.gz -C /usr/src/; \
 	rm piwik.tar.gz; \
 	apk del .fetch-deps
