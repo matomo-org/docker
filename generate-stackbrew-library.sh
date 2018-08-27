@@ -39,7 +39,7 @@ getArches() {
 			| xargs bashbrew cat --format '[{{ .RepoName }}:{{ .TagName }}]="{{ join " " .TagEntry.Architectures }}"'
 	) )"
 }
-getArches 'piwik'
+getArches 'matomo'
 
 # Header.
 cat <<-EOH
