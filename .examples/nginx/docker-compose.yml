@@ -5,7 +5,7 @@ db:
   environment:
     - MYSQL_ROOT_PASSWORD
 app:
-  image: piwik:fpm
+  image: matomo:fpm
   links:
     - db
   volumes:
@@ -14,7 +14,7 @@ app:
   env_file:
     - ./matomo.env
 web:
-  image: nginx
+  image: nginx:latest
   volumes:
     - ./nginx.conf:/etc/nginx/nginx.conf:ro
   links:
