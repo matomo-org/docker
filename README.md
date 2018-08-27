@@ -33,7 +33,7 @@ Once you're up and running, you'll arrive at the configuration wizard page. If y
 - Database Server: `db`
 - Login: `root`
 - Password: MYSQL_ROOT_PASSWORD
-- Database Name: piwik (or you can choose)
+- Database Name: matomo (or you can choose)
 
 And leave the rest as default.
 
@@ -45,7 +45,7 @@ A minimal set-up using docker-compose is available in the [.examples folder](.ex
 
 If you want to use the import logs script, you can then run the following container as needed, in order to execute the python import logs script:
 ```
-docker run --rm --volumes-from="matomo_app_1" --link matomo_app_1 python:2-alpine python /var/www/html/misc/log-analytics/import_logs.py --url=http://ip.of.your.piwik --login=yourlogin --password=yourpassword --idsite=1 --recorders=4 /var/www/html/logs/access.log
+docker run --rm --volumes-from="matomo_app_1" --link matomo_app_1 python:2-alpine python /var/www/html/misc/log-analytics/import_logs.py --url=http://ip.of.your.matomo --login=yourlogin --password=yourpassword --idsite=1 --recorders=4 /var/www/html/logs/access.log
 ```
 
 ## Contribute
