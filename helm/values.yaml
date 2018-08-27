@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
+  repository: matomo
+  tag: 3.5.1-fpm-alpine
   pullPolicy: IfNotPresent
 
 service:
@@ -20,7 +20,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - chart-example.local
+    - analytics.yourdomain.com
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -43,3 +43,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+matomoNginx:
+  image:
+    repository: nginx
+    tag: alpine
+    pullPolicy: IfNotPresent
