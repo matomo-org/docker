@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "matomo.fullname" . }}
+  labels:
+    app: {{ template "matomo.name" . }}
+    chart: {{ template "matomo.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  nginx.conf: |
+    # nginx.conf for php
+    events {
+      worker_connections 768;
+    }
+
+    http {
+      upstream backend {
+        server localhost:9000;
+      }
+
+      include /etc/nginx/mime.types;
+      default_type application/octet-stream;
+      gzip on;
+      gzip_disable "msie6";
+
+      # If we receive X-Forwarded-Proto, pass it through; otherwise, pass along the
+      # scheme used to connect to this server
+      map $http_x_forwarded_proto $proxy_x_forwarded_proto {
+        default $http_x_forwarded_proto;
+        ''      $scheme;
+      }
+      # If we receive X-Forwarded-Port, pass it through; otherwise, pass along the
+      # server port the client connected to
+      map $http_x_forwarded_port $proxy_x_forwarded_port {
+        default $http_x_forwarded_port;
+        ''      $server_port;
+      }
+      # If we receive Upgrade, set Connection to "upgrade"; otherwise, delete any
+      # Connection header that may have been passed to this server
+      map $http_upgrade $proxy_connection {
+        default upgrade;
+        '' close;
+      }
+      # Set appropriate X-Forwarded-Ssl header
+      map $scheme $proxy_x_forwarded_ssl {
+        default off;
+        https on;
+      }
+      # HTTP 1.1 support
+      proxy_http_version 1.1;
+      proxy_buffering off;
+      proxy_set_header Host $http_host;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $proxy_connection;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
+      proxy_set_header X-Forwarded-Ssl $proxy_x_forwarded_ssl;
+      proxy_set_header X-Forwarded-Port $proxy_x_forwarded_port;
+      proxy_set_header Proxy "";
+
+      server {
+        listen 80;
+
+        root /var/www/html/;
+        index index.php index.html index.htm;
+
+        location / {
+          try_files $uri $uri/ =404;
+        }
+
+        error_page 404 /404.html;
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+          root /usr/share/nginx/html;
+        }
+
+        location = /favicon.ico {
+          log_not_found off;
+          access_log off;
+        }
+
+        location ~ \.php$ {
+          fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+          fastcgi_param  SERVER_SOFTWARE    nginx;
+          fastcgi_param  QUERY_STRING       $query_string;
+          fastcgi_param  REQUEST_METHOD     $request_method;
+          fastcgi_param  CONTENT_TYPE       $content_type;
+          fastcgi_param  CONTENT_LENGTH     $content_length;
+          fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+          fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+          fastcgi_param  REQUEST_URI        $request_uri;
+          fastcgi_param  DOCUMENT_URI       $document_uri;
+          fastcgi_param  DOCUMENT_ROOT      $document_root;
+          fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+          fastcgi_param  REMOTE_ADDR        $remote_addr;
+          fastcgi_param  REMOTE_PORT        $remote_port;
+          fastcgi_param  SERVER_ADDR        $server_addr;
+          fastcgi_param  SERVER_PORT        $server_port;
+          fastcgi_param  SERVER_NAME        $server_name;
+          fastcgi_intercept_errors on;
+          fastcgi_pass backend;
+        }
+      }
+    }
