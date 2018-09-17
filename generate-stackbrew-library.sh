@@ -67,6 +67,11 @@ variants=( */ )
 variants=( "${variants[@]%/}" )
 
 for variant in "${variants[@]}"; do
+	if [ "$variant" = "helm" ]; then
+		# echo "ignoring helm folder";
+		continue;
+	fi
+
 	commit="$(dockerfileCommit "$variant")"
 	fullversion="$(git show "$commit":"$variant/Dockerfile" | awk '$1 == "ENV" && $2 == "MATOMO_VERSION" { print $3; exit }')"
 
