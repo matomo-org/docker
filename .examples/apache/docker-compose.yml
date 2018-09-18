@@ -1,0 +1,20 @@
+app:
+  image: matomo:3.5-apache
+  restart: always
+  links:
+    - db
+  volumes:
+    - ./config:/var/www/html/config:rw
+    - ./logs:/var/www/html/logs
+  environment:
+    - VIRTUAL_HOST=CHANGE_ME
+
+ db:
+  image: mariadb:latest
+  volumes:
+    - ./mysql/runtime2:/var/lib/mysql
+  environment:
+    - MYSQL_DATABASE=db
+    - MYSQL_ROOT_PASSWORD=CHANGE_ME
+    - MYSQL_USER=app
+    - MYSQL_PASSWORD=CHANGE_ME
