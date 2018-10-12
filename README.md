@@ -41,7 +41,7 @@ Then you can continue the installation with the super user.
 
 ## Docker-composer examples and log import instructions
 
-A minimal set-up using docker-compose is available in the [.examples folder](.examples/docker-compose.yml), a more complete [example can be found at IndieHosters/piwik](https://github.com/libresh/compose-matomo/blob/master/docker-compose.yml).
+A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/docker-compose.yml), a more complete [example can be found at IndieHosters/piwik](https://github.com/libresh/compose-matomo/blob/master/docker-compose.yml).
 
 If you want to use the import logs script, you can then run the following container as needed, in order to execute the python import logs script:
 ```
