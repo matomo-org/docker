@@ -69,7 +69,7 @@ RUN set -ex; \
 	curl -fsSL -o piwik.tar.gz.asc \
 		"https://builds.matomo.org/piwik-${MATOMO_VERSION}.tar.gz.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
+	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
 	gpg --batch --verify piwik.tar.gz.asc piwik.tar.gz; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" piwik.tar.gz.asc; \
