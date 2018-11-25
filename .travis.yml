@@ -1,9 +1,5 @@
-sudo: required
-
-services:
-    - docker
-
 language: bash
+services: docker
 
 install:
   - git clone https://github.com/docker-library/official-images.git ~/official-images
