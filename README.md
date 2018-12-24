@@ -52,7 +52,7 @@ docker run --rm --volumes-from="matomo_app_1" --link matomo_app_1 python:2-alpin
 
 Pull requests are very welcome!
 
-We'd love to hear your feedback and suggestions in the issue tracker: [github.com/motomo-org/docker/issues](https://github.com/matomo-org/docker/issues).
+We'd love to hear your feedback and suggestions in the issue tracker: [github.com/matomo-org/docker/issues](https://github.com/matomo-org/docker/issues).
 
 ## GeoIP
 
