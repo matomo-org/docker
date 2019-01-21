@@ -1,4 +1,4 @@
-FROM php:7.1-%%VARIANT%%
+FROM php:7.2-%%VARIANT%%
 
 LABEL maintainer="pierre@piwik.org"
 

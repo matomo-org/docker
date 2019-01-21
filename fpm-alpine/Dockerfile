@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-alpine
+FROM php:7.2-fpm-alpine
 
 LABEL maintainer="pierre@piwik.org"
 
@@ -44,7 +44,7 @@ RUN set -ex; \
 	apk add --virtual .piwik-phpext-rundeps $runDeps; \
 	apk del .build-deps
 
-ENV MATOMO_VERSION 3.7.0
+ENV MATOMO_VERSION 3.8.0
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \

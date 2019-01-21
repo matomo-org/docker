@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm
 
 LABEL maintainer="pierre@piwik.org"
 
@@ -49,7 +49,7 @@ RUN set -ex; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV MATOMO_VERSION 3.7.0
+ENV MATOMO_VERSION 3.8.0
 
 RUN set -ex; \
 	fetchDeps=" \
