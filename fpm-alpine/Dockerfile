@@ -8,7 +8,6 @@ RUN set -ex; \
 		$PHPIZE_DEPS \
 		autoconf \
 		freetype-dev \
-		geoip-dev \
 		icu-dev \
 		libjpeg-turbo-dev \
 		libpng-dev \
@@ -29,12 +28,10 @@ RUN set -ex; \
 	\
 # pecl will claim success even if one install fails, so we need to perform each install separately
 	pecl install APCu-5.1.15; \
-	pecl install geoip-1.1.1; \
 	pecl install redis-3.1.6; \
 	\
 	docker-php-ext-enable \
 		apcu \
-		geoip \
 		redis \
 	; \
 	\
@@ -70,8 +67,15 @@ RUN set -ex; \
 COPY php.ini /usr/local/etc/php/conf.d/php-piwik.ini
 
 RUN set -ex; \
-	curl -fsSL -o /usr/src/piwik/misc/GeoIPCity.dat.gz https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz; \
-	gunzip /usr/src/piwik/misc/GeoIPCity.dat.gz
+	curl -fsSL -o GeoIPCity.tar.gz \
+		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz"; \
+	curl -fsSL -o GeoIPCity.tar.gz.md5 \
+		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz.md5"; \
+	echo "$(cat GeoIPCity.tar.gz.md5)  GeoIPCity.tar.gz" | md5sum -c -; \
+	mkdir /usr/src/GeoIPCity; \
+	tar -xf GeoIPCity.tar.gz -C /usr/src/GeoIPCity --strip-components=1; \
+	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/piwik/misc/GeoLite2-City.mmdb; \
+	rm -rf GeoIPCity*
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
