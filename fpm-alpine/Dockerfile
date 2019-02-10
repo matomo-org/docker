@@ -84,6 +84,8 @@ RUN set -ex; \
 	tar -xf EnvironmentVariables.tar.gz -C /usr/src/piwik/plugins/EnvironmentVariables --strip-components=1; \
 	rm /usr/src/piwik/plugins/EnvironmentVariables/CHANGELOG.md /usr/src/piwik/plugins/EnvironmentVariables/README.md;
 
+COPY common.config.ini.php /usr/src/piwik/config/common.config.ini.php
+
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
