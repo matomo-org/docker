@@ -77,6 +77,13 @@ RUN set -ex; \
 	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/piwik/misc/GeoLite2-City.mmdb; \
 	rm -rf GeoIPCity*
 
+RUN set -ex; \
+	apk add --no-cache --virtual .fetch-deps unzip; \
+	curl -fsSL -o unifont.ttf.zip \
+		"https://matomo.org/wp-content/uploads/unifont.ttf.zip"; \
+	unzip unifont.ttf.zip -d /usr/src/piwik/plugins/ImageGraph/fonts/; \
+	apk del .fetch-deps;
+
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
