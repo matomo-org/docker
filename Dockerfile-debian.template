@@ -88,6 +88,13 @@ RUN set -ex; \
 	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/piwik/misc/GeoLite2-City.mmdb; \
 	rm -rf GeoIPCity*
 
+RUN set -ex; \
+	curl -fsSL -o EnvironmentVariables.tar.gz \
+		"https://github.com/matomo-org/plugin-EnvironmentVariables/archive/3.0.0.tar.gz"; \
+	mkdir /usr/src/piwik/plugins/EnvironmentVariables; \
+	tar -xf EnvironmentVariables.tar.gz -C /usr/src/piwik/plugins/EnvironmentVariables --strip-components=1; \
+	rm /usr/src/piwik/plugins/EnvironmentVariables/CHANGELOG.md /usr/src/piwik/plugins/EnvironmentVariables/README.md;
+
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
