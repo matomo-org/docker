@@ -88,7 +88,7 @@ RUN set -ex; \
 	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/piwik/misc/GeoLite2-City.mmdb; \
 	rm -rf GeoIPCity*
 
-RUN set-ex; \
+RUN set -ex; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends unzip; \
 	curl -fsSL -o unifont.ttf.zip \
