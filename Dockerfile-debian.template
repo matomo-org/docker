@@ -89,10 +89,12 @@ RUN set -ex; \
 	rm -rf GeoIPCity*
 
 RUN set -ex; \
-	curl -fsSL -o EnvironmentVariables.tar.gz \
-		"https://github.com/matomo-org/plugin-EnvironmentVariables/archive/3.0.0.tar.gz"; \
-	mkdir /usr/src/piwik/plugins/EnvironmentVariables; \
-	tar -xf EnvironmentVariables.tar.gz -C /usr/src/piwik/plugins/EnvironmentVariables --strip-components=1; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends unzip; \
+	curl -fsSL -o EnvironmentVariables.zip \
+		"https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/latest"; \
+	unzip EnvironmentVariables.zip -d /usr/src/piwik/plugins; \
+	apt-get purge -y --auto-remove unzip; \
 	rm /usr/src/piwik/plugins/EnvironmentVariables/CHANGELOG.md /usr/src/piwik/plugins/EnvironmentVariables/README.md;
 
 COPY common.config.ini.php /usr/src/piwik/config/common.config.ini.php
