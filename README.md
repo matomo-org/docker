@@ -24,7 +24,7 @@ docker run -d --link some-mysql:db matomo
 
 This assumes you've already launched a suitable MySQL or MariaDB database container.
 
-You'll now need to use a suitable reverse proxy to access the user interface; which is available on TCP port 9000. Nginx provides the necessary functions for translation between HTTP and FastCGI.
+You'll now need to use a suitable reverse proxy to access the user interface; which is available on TCP port 80. Nginx provides the necessary functions for translation between HTTP and FastCGI.
 
 ## Matomo Installation
 
