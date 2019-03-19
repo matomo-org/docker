@@ -1,4 +1,4 @@
-FROM php:7.2-%%VARIANT%%
+FROM php:7.3-%%VARIANT%%
 
 LABEL maintainer="pierre@piwik.org"
 
@@ -11,6 +11,7 @@ RUN set -ex; \
 		icu-dev \
 		libjpeg-turbo-dev \
 		libpng-dev \
+		libzip-dev \
 		openldap-dev \
 		pcre-dev \
 	; \

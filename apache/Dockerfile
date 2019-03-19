@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.3-apache
 
 LABEL maintainer="pierre@piwik.org"
 
@@ -12,6 +12,7 @@ RUN set -ex; \
 		libjpeg-dev \
 		libldap2-dev \
 		libpng-dev \
+		libzip-dev \
 	; \
 	\
 	debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
