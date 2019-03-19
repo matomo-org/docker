@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.3-fpm-alpine
 
 LABEL maintainer="pierre@piwik.org"
 
@@ -11,6 +11,7 @@ RUN set -ex; \
 		icu-dev \
 		libjpeg-turbo-dev \
 		libpng-dev \
+		libzip-dev \
 		openldap-dev \
 		pcre-dev \
 	; \
