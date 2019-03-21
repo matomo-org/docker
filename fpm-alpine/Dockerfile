@@ -45,7 +45,7 @@ RUN set -ex; \
 	apk add --virtual .piwik-phpext-rundeps $runDeps; \
 	apk del .build-deps
 
-ENV MATOMO_VERSION 3.9.0
+ENV MATOMO_VERSION 3.9.1
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \

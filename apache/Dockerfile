@@ -50,7 +50,7 @@ RUN set -ex; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 
-ENV MATOMO_VERSION 3.9.0
+ENV MATOMO_VERSION 3.9.1
 
 RUN set -ex; \
 	fetchDeps=" \
