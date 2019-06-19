@@ -62,21 +62,21 @@ RUN set -ex; \
 		$fetchDeps \
 	; \
 	\
-	curl -fsSL -o piwik.tar.gz \
-		"https://builds.matomo.org/piwik-${MATOMO_VERSION}.tar.gz"; \
-	curl -fsSL -o piwik.tar.gz.asc \
-		"https://builds.matomo.org/piwik-${MATOMO_VERSION}.tar.gz.asc"; \
+	curl -fsSL -o matomo.tar.gz \
+		"https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz"; \
+	curl -fsSL -o matomo.tar.gz.asc \
+		"https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
-	gpg --batch --verify piwik.tar.gz.asc piwik.tar.gz; \
+	gpg --batch --verify matomo.tar.gz.asc matomo.tar.gz; \
 	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" piwik.tar.gz.asc; \
-	tar -xzf piwik.tar.gz -C /usr/src/; \
-	rm piwik.tar.gz; \
+	rm -rf "$GNUPGHOME" matomo.tar.gz.asc; \
+	tar -xzf matomo.tar.gz -C /usr/src/; \
+	rm matomo.tar.gz; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $fetchDeps; \
 	rm -rf /var/lib/apt/lists/*
 
-COPY php.ini /usr/local/etc/php/conf.d/php-piwik.ini
+COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 RUN set -ex; \
 	curl -fsSL -o GeoIPCity.tar.gz \
@@ -86,13 +86,13 @@ RUN set -ex; \
 	echo "$(cat GeoIPCity.tar.gz.md5)  GeoIPCity.tar.gz" | md5sum -c -; \
 	mkdir /usr/src/GeoIPCity; \
 	tar -xf GeoIPCity.tar.gz -C /usr/src/GeoIPCity --strip-components=1; \
-	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/piwik/misc/GeoLite2-City.mmdb; \
+	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/matomo/misc/GeoLite2-City.mmdb; \
 	rm -rf GeoIPCity*
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
-# "/entrypoint.sh" will populate it at container startup from /usr/src/piwik
+# "/entrypoint.sh" will populate it at container startup from /usr/src/matomo
 VOLUME /var/www/html
 
 ENTRYPOINT ["/entrypoint.sh"]
