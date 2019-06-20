@@ -1,25 +1,32 @@
 version: "3"
 
 services:
-  app:
-    image: matomo:3.5-apache
-    restart: always
-    links:
-      - db
-    volumes:
-      - "./config:/var/www/html/config:rw"
-      - "./logs:/var/www/html/logs"
-    environment:
-      - "VIRTUAL_HOST=CHANGE_ME"
-    ports:
-      - "80:80"
-
   db:
-    image: mariadb:latest
+    image: mariadb
+    command: --max-allowed-packet=64MB
+    restart: always
     volumes:
-      - "./mysql/runtime2:/var/lib/mysql"
+      - db:/var/lib/mysql
     environment:
-      - "MYSQL_DATABASE=db"
-      - "MYSQL_ROOT_PASSWORD=CHANGE_ME"
-      - "MYSQL_USER=app"
-      - "MYSQL_PASSWORD=CHANGE_ME"
+      - MYSQL_ROOT_PASSWORD=
+    env_file:
+      - ./db.env
+
+  app:
+    image: matomo
+    restart: always
+    volumes:
+#     - ./config:/var/www/html/config
+#     - ./logs:/var/www/html/logs
+      - matomo:/var/www/html
+    environment:
+      - MYSQL_HOST=db
+      - VIRTUAL_HOST=
+    env_file:
+      - ./db.env
+    ports:
+      - 8080:80
+
+volumes:
+  db:
+  matomo:
