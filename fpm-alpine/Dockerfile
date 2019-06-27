@@ -45,6 +45,16 @@ RUN set -ex; \
 	apk add --virtual .matomo-phpext-rundeps $runDeps; \
 	apk del .build-deps
 
+# set recommended PHP.ini settings
+# see https://secure.php.net/manual/en/opcache.installation.php
+RUN { \
+		echo 'opcache.memory_consumption=128'; \
+		echo 'opcache.interned_strings_buffer=8'; \
+		echo 'opcache.max_accelerated_files=4000'; \
+		echo 'opcache.revalidate_freq=2'; \
+		echo 'opcache.fast_shutdown=1'; \
+	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+
 ENV MATOMO_VERSION 3.9.1
 
 RUN set -ex; \
