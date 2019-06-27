@@ -58,4 +58,4 @@ We'd love to hear your feedback and suggestions in the issue tracker: [github.co
 
 ## GeoIP
 
-This product includes GeoLite data created by MaxMind, available from [http://www.maxmind.com](http://www.maxmind.com).
+This product includes GeoLite data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).
