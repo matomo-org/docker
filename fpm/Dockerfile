@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.3-fpm-stretch
 
 LABEL maintainer="pierre@piwik.org"
 
