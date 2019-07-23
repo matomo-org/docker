@@ -1,4 +1,4 @@
-FROM php:7.3-apache-stretch
+FROM php:7.3-apache
 
 LABEL maintainer="pierre@piwik.org"
 
