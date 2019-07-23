@@ -20,7 +20,7 @@ services:
 #     - ./logs:/var/www/html/logs
       - matomo:/var/www/html
     environment:
-      - MYSQL_HOST=db
+      - MATOMO_DATABASE_HOST=db
       - VIRTUAL_HOST=
     env_file:
       - ./db.env
