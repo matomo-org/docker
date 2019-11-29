@@ -44,6 +44,7 @@ Then you can continue the installation with the super user.
 The following environment variables are also honored for configuring your Matomo instance:
 
 - `MATOMO_DATABASE_HOST`
+- `MATOMO_DATABASE_PORT`
 - `MATOMO_DATABASE_ADAPTER`
 - `MATOMO_DATABASE_TABLES_PREFIX`
 - `MATOMO_DATABASE_USERNAME`
