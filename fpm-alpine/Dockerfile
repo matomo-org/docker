@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-alpine
+FROM php:7.4-fpm-alpine
 
 LABEL maintainer="pierre@piwik.org"
 
@@ -16,7 +16,7 @@ RUN set -ex; \
 		pcre-dev \
 	; \
 	\
-	docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr; \
+	docker-php-ext-configure gd --with-freetype --with-jpeg; \
 	docker-php-ext-configure ldap; \
 	docker-php-ext-install -j "$(nproc)" \
 		gd \
