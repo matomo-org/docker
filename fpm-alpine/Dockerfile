@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-alpine
+FROM php:7.4-fpm-alpine
 
 LABEL maintainer="pierre@piwik.org"
 
@@ -16,7 +16,7 @@ RUN set -ex; \
 		pcre-dev \
 	; \
 	\
-	docker-php-ext-configure gd --with-freetype-dir=/usr --with-png-dir=/usr --with-jpeg-dir=/usr; \
+	docker-php-ext-configure gd --with-freetype --with-jpeg; \
 	docker-php-ext-configure ldap; \
 	docker-php-ext-install -j "$(nproc)" \
 		gd \
@@ -28,7 +28,7 @@ RUN set -ex; \
 	; \
 	\
 # pecl will claim success even if one install fails, so we need to perform each install separately
-	pecl install APCu-5.1.17; \
+	pecl install APCu-5.1.18; \
 	pecl install redis-4.3.0; \
 	\
 	docker-php-ext-enable \
@@ -55,7 +55,7 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-ENV MATOMO_VERSION 3.13.0
+ENV MATOMO_VERSION 3.13.1
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \
@@ -77,16 +77,17 @@ RUN set -ex; \
 
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
-RUN set -ex; \
-	curl -fsSL -o GeoIPCity.tar.gz \
-		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz"; \
-	curl -fsSL -o GeoIPCity.tar.gz.md5 \
-		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz.md5"; \
-	echo "$(cat GeoIPCity.tar.gz.md5)  GeoIPCity.tar.gz" | md5sum -c -; \
-	mkdir /usr/src/GeoIPCity; \
-	tar -xf GeoIPCity.tar.gz -C /usr/src/GeoIPCity --strip-components=1; \
-	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/matomo/misc/GeoLite2-City.mmdb; \
-	rm -rf GeoIPCity*
+# https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
+#RUN set -ex; \
+#	curl -fsSL -o GeoIPCity.tar.gz \
+#		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz"; \
+#	curl -fsSL -o GeoIPCity.tar.gz.md5 \
+#		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz.md5"; \
+#	echo "$(cat GeoIPCity.tar.gz.md5)  GeoIPCity.tar.gz" | md5sum -c -; \
+#	mkdir /usr/src/GeoIPCity; \
+#	tar -xf GeoIPCity.tar.gz -C /usr/src/GeoIPCity --strip-components=1; \
+#	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/matomo/misc/GeoLite2-City.mmdb; \
+#	rm -rf GeoIPCity*
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
