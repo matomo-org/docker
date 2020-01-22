@@ -14,6 +14,7 @@ RUN set -ex; \
 		libzip-dev \
 		openldap-dev \
 		pcre-dev \
+		tzdata \
 	; \
 	\
 	docker-php-ext-configure gd --with-freetype --with-jpeg; \
