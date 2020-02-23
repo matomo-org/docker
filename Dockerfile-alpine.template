@@ -91,9 +91,26 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
-# WORKDIR is /var/www/html (inherited via "FROM php")
-# "/entrypoint.sh" will populate it at container startup from /usr/src/matomo
-VOLUME /var/www/html
+ENV APACHE_DOCUMENT_ROOT /var/www/matomo
+WORKDIR ${APACHE_DOCUMENT_ROOT}
+
+RUN \
+  mv /usr/src/matomo/config /usr/src/config && \
+  mv /usr/src/matomo/plugins /usr/src/plugins && \
+  mv /usr/src/matomo/* ${APACHE_DOCUMENT_ROOT} && \
+# Fix permissions
+  chgrp -R 0 . && \
+  chmod -R 775 . && \
+# Fix apache config
+  sed -i 's/80/9000/g' /etc/apache2/ports.conf && \
+  sed -i 's/80/9000/g' /etc/apache2/sites-available/000-default.conf && \
+  sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
+  sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+VOLUME ["/var/www/matomo/config", "/var/www/matomo/plugins"]
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["%%CMD%%"]
+
+USER 1001
+EXPOSE 9000
