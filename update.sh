@@ -16,7 +16,7 @@ declare -A base=(
 latest="$(
 	git ls-remote --tags https://github.com/matomo-org/matomo.git \
 		| cut -d/ -f3 \
-		| grep -vE -- '-rc|-b' \
+		| grep -vE -- '-rc|-a|-b' \
 		| sort -V \
 		| tail -1
 )"
