@@ -25,7 +25,7 @@ This assumes you've already launched a suitable MySQL or MariaDB database contai
 Use a Docker volume to keep persistent data:
 
 ```console
-docker run -d --link some-mysql:db -v matomo:/var/www/html matomo
+docker run -d -p 8080:80 --link some-mysql:db -v matomo:/var/www/html matomo
 ```
 
 ## Matomo Installation
