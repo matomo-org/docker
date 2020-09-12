@@ -21,7 +21,6 @@ services:
       - matomo:/var/www/html
     environment:
       - MATOMO_DATABASE_HOST=db
-      - VIRTUAL_HOST=
     env_file:
       - ./db.env
     ports:
