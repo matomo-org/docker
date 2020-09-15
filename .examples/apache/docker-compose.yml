@@ -13,8 +13,10 @@ services:
       - ./db.env
 
   app:
-    image: matomo
+    image: t3nde/matomo:dev
     restart: always
+    depends_on:
+      - db
     volumes:
 #     - ./config:/var/www/html/config
 #     - ./logs:/var/www/html/logs

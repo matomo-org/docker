@@ -48,7 +48,10 @@ RUN set -ex; \
 		| xargs -rt apt-mark manual; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* \
+        /var/cache/debconf/* \
+        /tmp/* \
+        /var/tmp/*
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -84,7 +87,10 @@ RUN set -ex; \
 	tar -xzf matomo.tar.gz -C /usr/src/; \
 	rm matomo.tar.gz; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $fetchDeps; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* \
+        /var/cache/debconf/* \
+        /tmp/* \
+        /var/tmp/*
 
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
@@ -101,15 +107,23 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 #	rm -rf GeoIPCity*
 
 RUN set -ex; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends unzip; \
-	curl -fsSL -o EnvironmentVariables.zip \
-		"https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/latest"; \
-	unzip EnvironmentVariables.zip -d /usr/src/piwik/plugins; \
-	apt-get purge -y --auto-remove unzip; \
-	rm /usr/src/piwik/plugins/EnvironmentVariables/CHANGELOG.md /usr/src/piwik/plugins/EnvironmentVariables/README.md;
+    touch /usr/src/matomo/config/config.ini.php; \
+    chown 1000:1000 /usr/src/matomo/config/config.ini.php; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends unzip; \
+    curl -fsSL -o EnvironmentVariables.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
+    unzip EnvironmentVariables.zip -d /usr/src/matomo/plugins; \
+    apt-get purge -y --auto-remove unzip; \
+    rm EnvironmentVariables.zip \
+        /usr/src/matomo/plugins/EnvironmentVariables/CHANGELOG.md \
+        /usr/src/matomo/plugins/EnvironmentVariables/README.md; \
+    rm -rf /var/lib/apt/lists/* \
+        /var/cache/debconf/* \
+        /tmp/* \
+        /var/tmp/*
 
-COPY common.config.ini.php /usr/src/piwik/config/common.config.ini.php
+COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
