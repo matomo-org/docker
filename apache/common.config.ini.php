@@ -7,4 +7,3 @@ Plugins[] = EnvironmentVariables
 
 [PluginsInstalled]
 PluginsInstalled[] = EnvironmentVariables
-
