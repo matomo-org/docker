@@ -75,6 +75,10 @@ RUN set -ex; \
     rm matomo.tar.gz; \
     apk del .fetch-deps
 
+RUN curl -fsSL -o geoip.gz \
+        "https://download.db-ip.com/free/dbip-city-lite-$(date +%Y-%m).mmdb.gz" && \
+    gunzip -c geoip.gz > /usr/src/matomo/DBIP-City.mmdb
+
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 # https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
