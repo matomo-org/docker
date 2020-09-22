@@ -75,6 +75,12 @@ RUN set -ex; \
     rm matomo.tar.gz; \
     apk del .fetch-deps
 
+RUN curl -fsSL -o geoip.gz \
+        "https://download.db-ip.com/free/dbip-city-lite-$(date +%Y-%m).mmdb.gz" && \
+    mkdir -p /var/geoip/ && \
+    gunzip -c geoip.gz > /var/geoip/DBIP-City.mmdb && \
+	rm geoip.gz
+
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 # https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
@@ -90,8 +96,6 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 #	rm -rf GeoIPCity*
 
 RUN set -ex; \
-    touch /usr/src/matomo/config/config.ini.php; \
-    chown 1000:1000 /usr/src/matomo/config/config.ini.php; \
     apk add --no-cache --virtual .fetch-deps unzip; \
     curl -fsSL -o EnvironmentVariables.zip \
         "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
@@ -103,11 +107,13 @@ RUN set -ex; \
 
 COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
 
+COPY --chown=1000:1000 bootstrap.php /usr/src/matomo/bootstrap.php
+
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
 # "/entrypoint.sh" will populate it at container startup from /usr/src/matomo
-VOLUME /var/www/html
+VOLUME /data
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["%%CMD%%"]

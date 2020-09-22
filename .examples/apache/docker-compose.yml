@@ -20,13 +20,13 @@ services:
     volumes:
       # - ./config/common.config.ini.php:/var/www/html/config/common.config.ini.php
       # - ./logs:/var/www/html/logs
-      - matomo:/var/www/html
+      - matomo:/data
     environment:
       - MATOMO_DATABASE_HOST=db
     env_file:
       - ./db.env
     ports:
-      - 8080:80
+      - 8088:80
 
 volumes:
   db:

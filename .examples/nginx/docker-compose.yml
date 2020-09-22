@@ -21,6 +21,7 @@ services:
 #      - ./config:/var/www/html/config:rw
 #      - ./logs:/var/www/html/logs
       - matomo:/var/www/html
+      - data:/data
     environment:
       - MATOMO_DATABASE_HOST=db
     env_file:
@@ -41,3 +42,4 @@ services:
 volumes:
   db:
   matomo:
+  data:

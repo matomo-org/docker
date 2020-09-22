@@ -107,7 +107,7 @@ RUN set -ex; \
 
 COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
 
-COPY rootfs/ /
+COPY --chown=1000:1000 bootstrap.php /usr/src/matomo/bootstrap.php
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
