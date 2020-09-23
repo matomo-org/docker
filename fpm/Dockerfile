@@ -113,17 +113,23 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 #	rm -rf GeoIPCity*
 
 RUN set -ex; \
-    touch /usr/src/matomo/config/config.ini.php; \
-    chown 1000:1000 /usr/src/matomo/config/config.ini.php; \
     apt-get update; \
     apt-get install -y --no-install-recommends unzip; \
     curl -fsSL -o EnvironmentVariables.zip \
         "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
     unzip EnvironmentVariables.zip -d /usr/src/matomo/plugins; \
-    apt-get purge -y --auto-remove unzip; \
     rm EnvironmentVariables.zip \
         /usr/src/matomo/plugins/EnvironmentVariables/CHANGELOG.md \
         /usr/src/matomo/plugins/EnvironmentVariables/README.md; \
+
+RUN set -ex; \
+    curl -fsSL -o QueuedTracking.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
+    unzip QueuedTracking.zip -d /usr/src/matomo/plugins; \
+    apt-get purge -y --auto-remove unzip; \
+    rm QueuedTracking.zip \
+        /usr/src/matomo/plugins/QueuedTracking/CHANGELOG.md \
+        /usr/src/matomo/plugins/QueuedTracking/README.md; \
     rm -rf /var/lib/apt/lists/* \
         /var/cache/debconf/* \
         /tmp/* \

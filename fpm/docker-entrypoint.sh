@@ -18,6 +18,8 @@ if [ ! -e matomo.php ]; then
 	chown -R www-data:www-data .
 fi
 
+cp -Rf /var/www/config /data/
+
 if [ ! -s "/var/www/html/misc/DBIP-City.mmdb" ]; then
     mv /var/geoip/DBIP-City.mmdb /data/geoip/DBIP-City.mmdb
     ln -s /data/geoip/DBIP-City.mmdb /var/www/html/misc/DBIP-City.mmdb

@@ -100,10 +100,18 @@ RUN set -ex; \
     curl -fsSL -o EnvironmentVariables.zip \
         "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
     unzip EnvironmentVariables.zip -d /usr/src/matomo/plugins; \
-    apk del .fetch-deps; \
     rm EnvironmentVariables.zip \
         /usr/src/matomo/plugins/EnvironmentVariables/CHANGELOG.md \
         /usr/src/matomo/plugins/EnvironmentVariables/README.md
+
+RUN set -ex; \
+    curl -fsSL -o QueuedTracking.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
+    unzip QueuedTracking.zip -d /usr/src/matomo/plugins; \
+	apk del .fetch-deps; \
+    rm QueuedTracking.zip \
+        /usr/src/matomo/plugins/QueuedTracking/CHANGELOG.md \
+        /usr/src/matomo/plugins/QueuedTracking/README.md;
 
 COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
 
