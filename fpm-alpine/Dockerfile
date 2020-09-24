@@ -97,30 +97,15 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 RUN set -ex; \
     apk add --no-cache --virtual .fetch-deps unzip; \
-    curl -fsSL -o EnvironmentVariables.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
-    unzip EnvironmentVariables.zip -d /usr/src/matomo/plugins; \
-    rm EnvironmentVariables.zip \
-        /usr/src/matomo/plugins/EnvironmentVariables/CHANGELOG.md \
-        /usr/src/matomo/plugins/EnvironmentVariables/README.md
-
-RUN set -ex; \
-    apk add --no-cache --virtual .fetch-deps unzip; \
-    curl -fsSL -o CustomDimensions.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
-    unzip CustomDimensions.zip -d /usr/src/matomo/plugins; \
-    rm CustomDimensions.zip \
-        /usr/src/matomo/plugins/CustomDimensions/CHANGELOG.md \
-        /usr/src/matomo/plugins/CustomDimensions/README.md
-
-RUN set -ex; \
     curl -fsSL -o QueuedTracking.zip \
         "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
-    unzip QueuedTracking.zip -d /usr/src/matomo/plugins; \
+    curl -fsSL -o CustomDimensions.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
+    curl -fsSL -o EnvironmentVariables.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
+    unzip '*.zip' -d /usr/src/matomo/plugins; \
 	apk del .fetch-deps; \
-    rm QueuedTracking.zip \
-        /usr/src/matomo/plugins/QueuedTracking/CHANGELOG.md \
-        /usr/src/matomo/plugins/QueuedTracking/README.md;
+    rm *.zip;
 
 COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
 
