@@ -9,3 +9,11 @@ Plugins[] = "QueuedTracking"
 [PluginsInstalled]
 PluginsInstalled[] = "EnvironmentVariables"
 PluginsInstalled[] = "QueuedTracking"
+
+[QueuedTracking]
+notify_queue_threshold_single_queue = ""
+backend = ""
+redisDatabase = ""
+queueEnabled = ""
+redisHost = ""
+sentinelMasterName = ""
