@@ -42,7 +42,7 @@ RUN set -ex; \
 		| sort -u \
 		| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --no-cache --virtual .matomo-phpext-rundeps $runDeps; \
+	apk add --no-cache --virtual .matomo-phpext-rundeps $runDeps mariadb-client; \
 	apk del .build-deps
 
 # set recommended PHP.ini settings
@@ -105,6 +105,15 @@ RUN set -ex; \
         /usr/src/matomo/plugins/EnvironmentVariables/README.md
 
 RUN set -ex; \
+    apk add --no-cache --virtual .fetch-deps unzip; \
+    curl -fsSL -o CustomDimensions.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
+    unzip CustomDimensions.zip -d /usr/src/matomo/plugins; \
+    rm CustomDimensions.zip \
+        /usr/src/matomo/plugins/CustomDimensions/CHANGELOG.md \
+        /usr/src/matomo/plugins/CustomDimensions/README.md
+
+RUN set -ex; \
     curl -fsSL -o QueuedTracking.zip \
         "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
     unzip QueuedTracking.zip -d /usr/src/matomo/plugins; \
@@ -116,6 +125,8 @@ RUN set -ex; \
 COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
 
 COPY --chown=1000:1000 bootstrap.php /usr/src/matomo/bootstrap.php
+
+COPY --chown=1000:1000 dimensions.sql /tmp/dimensions.sql
 
 COPY docker-entrypoint.sh /entrypoint.sh
 

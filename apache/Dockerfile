@@ -13,6 +13,7 @@ RUN set -ex; \
 		libldap2-dev \
 		libpng-dev \
 		libzip-dev \
+		mariadb-client \
 	; \
 	\
 	debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
@@ -121,6 +122,16 @@ RUN set -ex; \
     rm EnvironmentVariables.zip \
         /usr/src/matomo/plugins/EnvironmentVariables/CHANGELOG.md \
         /usr/src/matomo/plugins/EnvironmentVariables/README.md; \
+
+RUN set -ex; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends unzip; \
+    curl -fsSL -o CustomDimensions.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
+    unzip EnvironmentVariables.zip -d /usr/src/matomo/plugins; \
+    rm CustomDimensions.zip \
+        /usr/src/matomo/plugins/CustomDimensions/CHANGELOG.md \
+        /usr/src/matomo/plugins/CustomDimensions/README.md; \
 
 RUN set -ex; \
     curl -fsSL -o QueuedTracking.zip \
