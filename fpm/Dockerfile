@@ -116,8 +116,6 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 RUN set -ex; \
 	apt-get update; \
 	    apt-get install -y --no-install-recommends unzip; \
-    curl -fsSL -o QueuedTracking.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
     curl -fsSL -o EnvironmentVariables.zip \
         "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
     curl -fsSL -o CustomDimensions.zip \

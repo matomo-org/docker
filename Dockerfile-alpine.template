@@ -97,8 +97,6 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 RUN set -ex; \
     apk add --no-cache --virtual .fetch-deps unzip; \
-    curl -fsSL -o QueuedTracking.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
     curl -fsSL -o CustomDimensions.zip \
         "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
     curl -fsSL -o EnvironmentVariables.zip \
