@@ -25,10 +25,12 @@ set -x
 
 for variant in apache fpm fpm-alpine; do
 	template="Dockerfile-${base[$variant]}.template"
-	cp $template "$variant/Dockerfile"
+	cp "$template" "$variant/Dockerfile"
 	cp docker-entrypoint.sh "$variant/docker-entrypoint.sh"
 	cp common.config.ini.php "$variant/common.config.ini.php"
 	cp php.ini "$variant/php.ini"
+	cp dimensions.sql "$variant/dimensions.sql"
+	cp bootstrap.php "$variant/bootstrap.php"
 	sed -ri -e '
 		s/%%VARIANT%%/'"$variant"'/;
 		s/%%VERSION%%/'"$latest"'/;

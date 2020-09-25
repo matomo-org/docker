@@ -13,18 +13,20 @@ services:
       - ./db.env
 
   app:
-    image: matomo
+    image: t3nde/matomo:dev
     restart: always
+    depends_on:
+      - db
     volumes:
-#     - ./config:/var/www/html/config
-#     - ./logs:/var/www/html/logs
-      - matomo:/var/www/html
+      # - ./config/common.config.ini.php:/var/www/html/config/common.config.ini.php
+      # - ./logs:/var/www/html/logs
+      - matomo:/data
     environment:
       - MATOMO_DATABASE_HOST=db
     env_file:
       - ./db.env
     ports:
-      - 8080:80
+      - 8088:80
 
 volumes:
   db:

@@ -13,6 +13,7 @@ RUN set -ex; \
 		libldap2-dev \
 		libpng-dev \
 		libzip-dev \
+		mariadb-client \
 	; \
 	\
 	debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
@@ -48,7 +49,10 @@ RUN set -ex; \
 		| xargs -rt apt-mark manual; \
 	\
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* \
+        /var/cache/debconf/* \
+        /tmp/* \
+        /var/tmp/*
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -84,7 +88,16 @@ RUN set -ex; \
 	tar -xzf matomo.tar.gz -C /usr/src/; \
 	rm matomo.tar.gz; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $fetchDeps; \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* \
+        /var/cache/debconf/* \
+        /tmp/* \
+        /var/tmp/*
+
+RUN curl -fsSL -o geoip.gz \
+        "https://download.db-ip.com/free/dbip-city-lite-$(date +%Y-%m).mmdb.gz" && \
+    mkdir -p /var/geoip/ && \
+    gunzip -c geoip.gz > /var/geoip/DBIP-City.mmdb && \
+	rm geoip.gz
 
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
@@ -102,20 +115,30 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 RUN set -ex; \
 	apt-get update; \
-	apt-get install -y --no-install-recommends unzip; \
-	curl -fsSL -o EnvironmentVariables.zip \
-		"https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/latest"; \
-	unzip EnvironmentVariables.zip -d /usr/src/piwik/plugins; \
-	apt-get purge -y --auto-remove unzip; \
-	rm /usr/src/piwik/plugins/EnvironmentVariables/CHANGELOG.md /usr/src/piwik/plugins/EnvironmentVariables/README.md;
+	    apt-get install -y --no-install-recommends unzip; \
+    curl -fsSL -o QueuedTracking.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
+    curl -fsSL -o EnvironmentVariables.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
+    curl -fsSL -o CustomDimensions.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
+    unzip '*.zip' -d /usr/src/matomo/plugins; \
+    apt-get purge -y --auto-remove unzip; \
+    rm *.zip; \
+    rm -rf /var/lib/apt/lists/* \
+        /var/cache/debconf/* \
+        /tmp/* \
+        /var/tmp/*
 
-COPY common.config.ini.php /usr/src/piwik/config/common.config.ini.php
+COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
+
+COPY --chown=1000:1000 bootstrap.php /usr/src/matomo/bootstrap.php
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
 # "/entrypoint.sh" will populate it at container startup from /usr/src/matomo
-VOLUME /var/www/html
+VOLUME /data
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]

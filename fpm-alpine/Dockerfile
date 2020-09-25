@@ -42,7 +42,7 @@ RUN set -ex; \
 		| sort -u \
 		| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --virtual .matomo-phpext-rundeps $runDeps; \
+	apk add --no-cache --virtual .matomo-phpext-rundeps $runDeps mariadb-client; \
 	apk del .build-deps
 
 # set recommended PHP.ini settings
@@ -58,22 +58,28 @@ RUN { \
 ENV MATOMO_VERSION 3.14.1
 
 RUN set -ex; \
-	apk add --no-cache --virtual .fetch-deps \
-		gnupg \
-	; \
-	\
-	curl -fsSL -o matomo.tar.gz \
-		"https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz"; \
-	curl -fsSL -o matomo.tar.gz.asc \
-		"https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz.asc"; \
-	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
-	gpg --batch --verify matomo.tar.gz.asc matomo.tar.gz; \
-	gpgconf --kill all; \
-	rm -rf "$GNUPGHOME" matomo.tar.gz.asc; \
-	tar -xzf matomo.tar.gz -C /usr/src/; \
-	rm matomo.tar.gz; \
-	apk del .fetch-deps
+    apk add --no-cache --virtual .fetch-deps \
+        gnupg \
+    ; \
+    \
+    curl -fsSL -o matomo.tar.gz \
+        "https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz"; \
+    curl -fsSL -o matomo.tar.gz.asc \
+        "https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz.asc"; \
+    export GNUPGHOME="$(mktemp -d)"; \
+    gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
+    gpg --batch --verify matomo.tar.gz.asc matomo.tar.gz; \
+    gpgconf --kill all; \
+    rm -rf "$GNUPGHOME" matomo.tar.gz.asc; \
+    tar -xzf matomo.tar.gz -C /usr/src/; \
+    rm matomo.tar.gz; \
+    apk del .fetch-deps
+
+RUN curl -fsSL -o geoip.gz \
+        "https://download.db-ip.com/free/dbip-city-lite-$(date +%Y-%m).mmdb.gz" && \
+    mkdir -p /var/geoip/ && \
+    gunzip -c geoip.gz > /var/geoip/DBIP-City.mmdb && \
+	rm geoip.gz
 
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
@@ -90,20 +96,28 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 #	rm -rf GeoIPCity*
 
 RUN set -ex; \
-	apk add --no-cache --virtual .fetch-deps unzip; \
-	curl -fsSL -o EnvironmentVariables.zip \
-		"https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/latest"; \
-	unzip EnvironmentVariables.zip -d /usr/src/piwik/plugins; \
+    apk add --no-cache --virtual .fetch-deps unzip; \
+    curl -fsSL -o QueuedTracking.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/QueuedTracking/download/3.3.6"; \
+    curl -fsSL -o CustomDimensions.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
+    curl -fsSL -o EnvironmentVariables.zip \
+        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
+    unzip '*.zip' -d /usr/src/matomo/plugins; \
 	apk del .fetch-deps; \
-	rm /usr/src/piwik/plugins/EnvironmentVariables/CHANGELOG.md /usr/src/piwik/plugins/EnvironmentVariables/README.md;
+    rm *.zip;
 
-COPY common.config.ini.php /usr/src/piwik/config/common.config.ini.php
+COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.config.ini.php
+
+COPY --chown=1000:1000 bootstrap.php /usr/src/matomo/bootstrap.php
+
+COPY --chown=1000:1000 dimensions.sql /tmp/dimensions.sql
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
 # "/entrypoint.sh" will populate it at container startup from /usr/src/matomo
-VOLUME /var/www/html
+VOLUME /data
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["php-fpm"]

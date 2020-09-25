@@ -13,22 +13,25 @@ services:
       - ./db.env
 
   app:
-    image: matomo:fpm-alpine
+    image: t3nde/matomo:3.14.1-fpm-alpine
     restart: always
-    links:
+    depends_on:
       - db
     volumes:
 #      - ./config:/var/www/html/config:rw
 #      - ./logs:/var/www/html/logs
       - matomo:/var/www/html
+      - data:/data
     environment:
       - MATOMO_DATABASE_HOST=db
     env_file:
       - ./db.env
 
   web:
-    image: nginx:alpine
+    image: nginx:1.18.0-alpine
     restart: always
+    depends_on:
+      - app
     volumes:
       - matomo:/var/www/html:ro
       # see https://github.com/matomo-org/matomo-nginx
@@ -39,3 +42,4 @@ services:
 volumes:
   db:
   matomo:
+  data:
