@@ -25,10 +25,6 @@ if [ ! -s "/var/www/html/misc/DBIP-City.mmdb" ]; then
     ln -s /data/geoip/DBIP-City.mmdb /var/www/html/misc/DBIP-City.mmdb
 fi
 
-# Create tables for CustomDimensions Plugin for auto activation
-mysql -u $MATOMO_DATABASE_USERNAME -h $MATOMO_DATABASE_HOST -p$MATOMO_DATABASE_PASSWORD $MATOMO_DATABASE_DBNAME < /tmp/dimensions.sql
-rm /tmp/dimensions.sql
-
 # Check if already installed
 if [ -f /data/config/config.ini.php ]; then
     echo "Setting Matomo log level to $LOG_LEVEL..."
