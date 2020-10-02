@@ -109,8 +109,6 @@ COPY --chown=1000:1000 common.config.ini.php /usr/src/matomo/config/common.confi
 
 COPY --chown=1000:1000 bootstrap.php /usr/src/matomo/bootstrap.php
 
-COPY --chown=1000:1000 dimensions.sql /tmp/dimensions.sql
-
 COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
