@@ -1,6 +1,17 @@
 # Matomo (formerly Piwik)
 
-[![Build Status](https://travis-ci.org/matomo-org/docker.svg?branch=master)](https://travis-ci.org/matomo-org/docker)
+[![GitHub CI build status badge](https://github.com/matomo-org/docker/workflows/GitHub%20CI/badge.svg)](https://github.com/matomo-org/docker/actions?query=workflow%3A%22GitHub+CI%22)
+[![update.sh build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/update.sh/job/matomo.svg?label=Automated%20update.sh)](https://doi-janky.infosiftr.net/job/update.sh/job/matomo/)
+[![amd64 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/amd64/job/matomo.svg?label=amd64)](https://doi-janky.infosiftr.net/job/multiarch/job/amd64/job/matomo)
+[![arm32v5 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm32v5/job/matomo.svg?label=arm32v5)](https://doi-janky.infosiftr.net/job/multiarch/job/arm32v5/job/matomo)
+[![arm32v6 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm32v6/job/matomo.svg?label=arm32v6)](https://doi-janky.infosiftr.net/job/multiarch/job/arm32v6/job/matomo)
+[![arm32v7 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm32v7/job/matomo.svg?label=arm32v7)](https://doi-janky.infosiftr.net/job/multiarch/job/arm32v7/job/matomo)
+[![arm64v8 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm64v8/job/matomo.svg?label=arm64v8)](https://doi-janky.infosiftr.net/job/multiarch/job/arm64v8/job/matomo)
+[![i386 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/i386/job/matomo.svg?label=i386)](https://doi-janky.infosiftr.net/job/multiarch/job/i386/job/matomo)
+[![mips64le build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/mips64le/job/matomo.svg?label=mips64le)](https://doi-janky.infosiftr.net/job/multiarch/job/mips64le/job/matomo)
+[![ppc64le build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/ppc64le/job/matomo.svg?label=ppc64le)](https://doi-janky.infosiftr.net/job/multiarch/job/ppc64le/job/matomo)
+[![s390x build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/s390x/job/matomo.svg?label=s390x)](https://doi-janky.infosiftr.net/job/multiarch/job/s390x/job/matomo)
+
 <img align="right" width="300px" src="https://matomo.org/wp-content/themes/website-child/assets/img/media/matomo.png" alt="Matomo logo">
 [Matomo](https://matomo.org/) (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics:
 
