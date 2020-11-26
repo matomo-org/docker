@@ -94,13 +94,10 @@ COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 #	tar -xf GeoIPCity.tar.gz -C /usr/src/GeoIPCity --strip-components=1; \
 #	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/matomo/misc/GeoLite2-City.mmdb; \
 #	rm -rf GeoIPCity*
-
 RUN set -ex; \
     apk add --no-cache --virtual .fetch-deps unzip; \
-    curl -fsSL -o CustomDimensions.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
     curl -fsSL -o EnvironmentVariables.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
+        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/4.0.1"; \
     unzip '*.zip' -d /usr/src/matomo/plugins; \
 	apk del .fetch-deps; \
     rm *.zip;

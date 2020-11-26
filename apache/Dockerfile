@@ -64,7 +64,7 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-ENV MATOMO_VERSION 3.14.1
+ENV MATOMO_VERSION 4.0.0
 
 RUN set -ex; \
 	fetchDeps=" \
@@ -117,9 +117,7 @@ RUN set -ex; \
 	apt-get update; \
 	    apt-get install -y --no-install-recommends unzip; \
     curl -fsSL -o EnvironmentVariables.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/3.0.0"; \
-    curl -fsSL -o CustomDimensions.zip \
-        "https://plugins.matomo.org/api/2.0/plugins/CustomDimensions/download/3.1.10"; \
+        "https://plugins.matomo.org/api/2.0/plugins/EnvironmentVariables/download/4.0.1"; \
     unzip '*.zip' -d /usr/src/matomo/plugins; \
     apt-get purge -y --auto-remove unzip; \
     rm *.zip; \
