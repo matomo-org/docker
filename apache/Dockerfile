@@ -28,13 +28,14 @@ RUN set -ex; \
 	; \
 	\
 # pecl will claim success even if one install fails, so we need to perform each install separately
-	pecl install APCu-5.1.19; \
-	pecl install redis-5.3.2; \
+	pecl install APCu-5.1.20; \
+	pecl install redis-5.3.4; \
 	\
 	docker-php-ext-enable \
 		apcu \
 		redis \
 	; \
+	rm -r /tmp/pear; \
 	\
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
 	apt-mark auto '.*' > /dev/null; \
