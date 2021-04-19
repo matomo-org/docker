@@ -20,6 +20,7 @@ RUN set -ex; \
 	docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
 	docker-php-ext-install -j "$(nproc)" \
 		gd \
+		bcmath \
 		ldap \
 		mysqli \
 		opcache \
