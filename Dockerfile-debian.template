@@ -79,7 +79,7 @@ RUN set -ex; \
 	curl -fsSL -o matomo.tar.gz.asc \
 		"https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
 	gpg --batch --verify matomo.tar.gz.asc matomo.tar.gz; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" matomo.tar.gz.asc; \
@@ -89,18 +89,6 @@ RUN set -ex; \
 	rm -rf /var/lib/apt/lists/*
 
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
-
-# https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
-#RUN set -ex; \
-#	curl -fsSL -o GeoIPCity.tar.gz \
-#		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz"; \
-#	curl -fsSL -o GeoIPCity.tar.gz.md5 \
-#		"https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz.md5"; \
-#	echo "$(cat GeoIPCity.tar.gz.md5)  GeoIPCity.tar.gz" | md5sum -c -; \
-#	mkdir /usr/src/GeoIPCity; \
-#	tar -xf GeoIPCity.tar.gz -C /usr/src/GeoIPCity --strip-components=1; \
-#	mv /usr/src/GeoIPCity/GeoLite2-City.mmdb /usr/src/matomo/misc/GeoLite2-City.mmdb; \
-#	rm -rf GeoIPCity*
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
