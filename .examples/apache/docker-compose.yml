@@ -7,8 +7,6 @@ services:
     restart: always
     volumes:
       - db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=
     env_file:
       - ./db.env
 
@@ -19,8 +17,6 @@ services:
 #     - ./config:/var/www/html/config
 #     - ./logs:/var/www/html/logs
       - matomo:/var/www/html
-    environment:
-      - MATOMO_DATABASE_HOST=db
     env_file:
       - ./db.env
     ports:
