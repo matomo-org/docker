@@ -26,7 +26,7 @@
 You can run the Matomo container and service like so:
 
 ```bash
-docker run -d --link some-mysql:db matomo
+docker run -d --link some-mysql:db matomo:4-apache
 ```
 
 This assumes you've already launched a suitable MySQL or MariaDB database container.
@@ -36,7 +36,7 @@ This assumes you've already launched a suitable MySQL or MariaDB database contai
 Use a Docker volume to keep persistent data:
 
 ```console
-docker run -d -p 8080:80 --link some-mysql:db -v matomo:/var/www/html matomo
+docker run -d -p 8080:80 --link some-mysql:db -v matomo:/var/www/html matomo:4-apache
 ```
 
 ## Matomo Installation

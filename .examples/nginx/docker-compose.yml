@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: mariadb
+    image: mariadb:10-focal
     command: --max-allowed-packet=64MB
     restart: always
     volumes:
@@ -13,7 +13,7 @@ services:
       - ./db.env
 
   app:
-    image: matomo:fpm-alpine
+    image: matomo:4-fpm-alpine
     restart: always
     links:
       - db
