@@ -44,9 +44,9 @@ docker run -d -p 8080:80 --link some-mysql:db -v matomo:/var/www/html matomo
 Once you're up and running, you'll arrive at the configuration wizard page. If you're using the compose file, at the `Database Setup` step, please enter the following:
 
 - Database Server: `db`
--	Login: MYSQL_USER
--	Password: MYSQL_PASSWORD
--	Database Name: MYSQL_DATABASE
+- Login: MYSQL_USER
+- Password: MYSQL_PASSWORD
+- Database Name: MYSQL_DATABASE
 
 And leave the rest as default.
 
@@ -61,11 +61,16 @@ The following environment variables are also honored for configuring your Matomo
 - `MATOMO_DATABASE_PASSWORD`
 - `MATOMO_DATABASE_DBNAME`
 
+The PHP memory limit can be configured with the following environment variable:
+
+- `PHP_MEMORY_LIMIT`
+
 ## Docker-composer examples and log import instructions
 
 A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/docker-compose.yml), a more complete [example can be found at IndieHosters/piwik](https://github.com/libresh/compose-matomo/blob/master/docker-compose.yml).
 
 If you want to use the import logs script, you can then run the following container as needed, in order to execute the python import logs script:
+
 ```
 docker run --rm --volumes-from="matomo_app_1" --link matomo_app_1 python:2-alpine python /var/www/html/misc/log-analytics/import_logs.py --url=http://ip.of.your.matomo --login=yourlogin --password=yourpassword --idsite=1 --recorders=4 /var/www/html/logs/access.log
 ```

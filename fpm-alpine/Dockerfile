@@ -2,6 +2,8 @@ FROM php:7.4-fpm-alpine
 
 LABEL maintainer="pierre@piwik.org"
 
+ENV PHP_MEMORY_LIMIT=256M
+
 RUN set -ex; \
 	\
 	apk add --no-cache --virtual .build-deps \
