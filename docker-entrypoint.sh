@@ -5,21 +5,23 @@ set -e
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
 #  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
-# See https://github.com/MariaDB/mariadb-docker/commit/6452a881b90283f46c88925b08c2d580a49a27cc
 file_env() {
 	local var="$1"
 	local fileVar="${var}_FILE"
 	local def="${2:-}"
-	if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
-		mysql_error "Both $var and $fileVar are set (but are exclusive)"
+	local varValue=$(env | grep -E "^${var}=" | sed -E -e "s/^${var}=//")
+	local fileVarValue=$(env | grep -E "^${fileVar}=" | sed -E -e "s/^${fileVar}=//")
+	if [ -n "${varValue}" ] && [ -n "${fileVarValue}" ]; then
+		echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
+		exit 1
 	fi
-	local val="$def"
-	if [ "${!var:-}" ]; then
-		val="${!var}"
-	elif [ "${!fileVar:-}" ]; then
-		val="$(< "${!fileVar}")"
+	if [ -n "${varValue}" ]; then
+		export "$var"="${varValue}"
+	elif [ -n "${fileVarValue}" ]; then
+		export "$var"="$(cat "${fileVarValue}")"
+	elif [ -n "${def}" ]; then
+		export "$var"="$def"
 	fi
-	export "$var"="$val"
 	unset "$fileVar"
 }
 
