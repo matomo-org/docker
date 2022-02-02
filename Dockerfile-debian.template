@@ -33,7 +33,7 @@ RUN set -ex; \
 	\
 # pecl will claim success even if one install fails, so we need to perform each install separately
 	pecl install APCu-5.1.21; \
-	pecl install redis-5.3.4; \
+	pecl install redis-5.3.6; \
 	\
 	docker-php-ext-enable \
 		apcu \
