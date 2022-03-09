@@ -65,7 +65,7 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-ENV MATOMO_VERSION 4.7.1
+ENV MATOMO_VERSION 4.8.0
 
 RUN set -ex; \
 	fetchDeps=" \
@@ -82,7 +82,7 @@ RUN set -ex; \
 	curl -fsSL -o matomo.tar.gz.asc \
 		"https://builds.matomo.org/matomo-${MATOMO_VERSION}.tar.gz.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys 814E346FA01A20DBB04B6807B5DBD5925590A237; \
+	gpg --batch --keyserver keyserver.ubuntu.com --recv-keys F529A27008477483777FC23D63BB30D0E5D2C749; \
 	gpg --batch --verify matomo.tar.gz.asc matomo.tar.gz; \
 	gpgconf --kill all; \
 	rm -rf "$GNUPGHOME" matomo.tar.gz.asc; \
