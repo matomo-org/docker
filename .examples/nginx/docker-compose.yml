@@ -8,9 +8,10 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
-    env_file:
-      - ./db.env
+      - MARIADB_PASSWORD
+      - MARIADB_USER
+      - MARIADB_DATABASE
+      - MARIADB_ROOT_PASSWORD
 
   app:
     image: matomo:fpm-alpine
@@ -18,15 +19,12 @@ services:
     links:
       - db
     volumes:
-      # - ./config:/var/www/html/config:rw
-      # - ./logs:/var/www/html/logs
+      - ./config:/var/www/html/config:rw
+      - ./logs:/var/www/html/logs
       - matomo:/var/www/html
     environment:
       - MATOMO_DATABASE_HOST=db
       - PHP_MEMORY_LIMIT=2048M
-    env_file:
-      - ./db.env
-
   web:
     image: nginx:alpine
     restart: always
