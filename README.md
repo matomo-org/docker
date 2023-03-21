@@ -65,7 +65,7 @@ The PHP memory limit can be configured with the following environment variable:
 
 - `PHP_MEMORY_LIMIT`
 
-## Docker-composer examples and log import instructions
+## Docker-compose examples and log import instructions
 
 A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/docker-compose.yml), a more complete [example can be found at IndieHosters/piwik](https://github.com/libresh/compose-matomo/blob/master/docker-compose.yml).
 
