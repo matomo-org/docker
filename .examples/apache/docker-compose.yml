@@ -6,9 +6,11 @@ services:
     command: --max-allowed-packet=64MB
     restart: always
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/mysql:Z
     environment:
       - MYSQL_ROOT_PASSWORD=
+      - MARIADB_AUTO_UPGRADE=1
+      - MARIADB_DISABLE_UPGRADE_BACKUP=1
     env_file:
       - ./db.env
 
@@ -16,9 +18,9 @@ services:
     image: matomo
     restart: always
     volumes:
-#     - ./config:/var/www/html/config
-#     - ./logs:/var/www/html/logs
-      - matomo:/var/www/html
+#     - ./config:/var/www/html/config:z
+#     - ./logs:/var/www/html/logs:z
+      - matomo:/var/www/html:z
     environment:
       - MATOMO_DATABASE_HOST=db
     env_file:
