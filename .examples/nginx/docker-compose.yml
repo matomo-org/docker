@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   db:
@@ -8,7 +8,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=123456
     env_file:
       - ./db.env
 
@@ -33,10 +33,17 @@ services:
     volumes:
       - matomo:/var/www/html:ro
       # see https://github.com/matomo-org/matomo-nginx
-      - ./matomo.conf:/etc/nginx/conf.d/default.conf:ro
+      #- ./matomo.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      - 8080:80
+      - "8080:80"
+    configs:
+      - source: matomo.conf
+        target: /etc/nginx/conf.d/default.conf # for Portainer
 
 volumes:
   db:
   matomo:
+
+configs:
+  matomo.conf:
+    file: ./matomo.conf
