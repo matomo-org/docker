@@ -2,7 +2,7 @@ version: "3"
 
 services:
   db:
-    image: mariadb
+    image: mariadb:10.11
     command: --max-allowed-packet=64MB
     restart: always
     volumes:
@@ -13,7 +13,7 @@ services:
       - ./db.env
 
   app:
-    image: matomo:10.11
+    image: matomo
     restart: always
     volumes:
 #     - ./config:/var/www/html/config
