@@ -13,7 +13,7 @@ services:
       - ./db.env
 
   app:
-    image: matomo
+    image: matomo:10.11
     restart: always
     volumes:
 #     - ./config:/var/www/html/config
