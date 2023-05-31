@@ -47,8 +47,8 @@ RUN set -ex; \
 		| sort -u \
 		| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --virtual .matomo-phpext-rundeps $runDeps; \
-	apk del .build-deps
+	apk add --no-network --virtual .matomo-phpext-rundeps $runDeps; \
+	apk del --no-network .build-deps
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
