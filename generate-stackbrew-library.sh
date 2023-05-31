@@ -44,7 +44,7 @@ getArches 'matomo'
 # Header.
 cat <<-EOH
 # This file is generated via https://github.com/matomo-org/docker/blob/$(fileCommit "$self")/$self
-Maintainers: Pierre Ozoux <pierre@piwik.org> (@pierreozoux)
+Maintainers: Tsteur (@tsteur)
 GitRepo: https://github.com/matomo-org/docker.git
 EOH
 
