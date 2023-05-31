@@ -31,8 +31,29 @@ file_env 'MATOMO_DATABASE_PASSWORD'
 file_env 'MATOMO_DATABASE_DBNAME'
 
 if [ ! -e matomo.php ]; then
+	uid="$(id -u)"
+	gid="$(id -g)"
+	if [ "$uid" = '0' ]; then
+		case "$1" in
+			apache2*)
+				user="${APACHE_RUN_USER:-www-data}"
+				group="${APACHE_RUN_GROUP:-www-data}"
+
+			# strip off any '#' symbol ('#1000' is valid syntax for Apache)
+			user="${user#'#'}"
+			group="${group#'#'}"
+			;;
+			*) # php-fpm
+				user='www-data'
+				group='www-data'
+				;;
+		esac
+	else
+		user="$uid"
+		group="$gid"
+	fi
 	tar cf - --one-file-system -C /usr/src/matomo . | tar xf -
-	chown -R www-data:www-data .
+	chown -R "$user":"$group" .
 fi
 
 exec "$@"
