@@ -1,7 +1,5 @@
 FROM php:8.1-fpm
 
-LABEL maintainer="pierre@piwik.org"
-
 ENV PHP_MEMORY_LIMIT=256M
 
 RUN set -ex; \
