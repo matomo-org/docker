@@ -8,7 +8,7 @@ RUN set -ex; \
 	\
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		libfreetype6-dev \
+		libfreetype-dev \
 		libjpeg-dev \
 		libldap2-dev \
 		libpng-dev \
