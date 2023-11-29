@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 ENV PHP_MEMORY_LIMIT=256M
 
