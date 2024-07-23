@@ -56,4 +56,6 @@ if [ ! -e matomo.php ]; then
 	chown -R "$user":"$group" .
 fi
 
+/var/www/html/console core:create-security-files
+
 exec "$@"
