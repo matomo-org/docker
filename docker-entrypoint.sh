@@ -56,6 +56,8 @@ if [ ! -e matomo.php ]; then
 	chown -R "$user":"$group" .
 fi
 
-/var/www/html/console core:create-security-files
+if expr "$1" : "apache" 1>/dev/null; then
+	/var/www/html/console core:create-security-files
+fi
 
 exec "$@"
