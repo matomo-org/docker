@@ -1,0 +1,121 @@
+---
+  name: Build matomo-sshd Container
+  
+  permissions: write-all
+  
+  concurrency: 
+    group: ${{ github.workflow }}
+    cancel-in-progress: true
+  
+  on:
+    push:
+      branches:
+        - main
+
+  env:
+    AZURECR_PASSWORD: ${{ secrets.AZURECR_PASSWORD }}
+    DOCKER_HUB_PASSWORD: ''
+    GITHUB_PACKAGES_USERNAME: ${{ secrets._GITHUB_PACKAGES_USERNAME || github.repository_owner }}
+    GITHUB_PACKAGES_PASSWORD: ${{ secrets._GITHUB_PACKAGES_PASSWORD || secrets.GITHUB_TOKEN }}
+    GITHUB_PACKAGES_NAMESPACE: ${{ vars._GITHUB_PACKAGES_NAMESPACE || vars._GITHUB_PACKAGES_USERNAME || github.repository_owner }}
+    AZURECR_REGISTRY_NAME: ${{ vars.AZURECR_REGISTRY_NAME }}
+    AZURECR_USERNAME: ${{ vars.AZURECR_USERNAME }}
+    DOCKER_HUB_USERNAME: ${{ vars.DOCKER_HUB_USERNAME }}
+    GHCR_TAG: ghcr.io/${{ vars._GITHUB_PACKAGES_NAMESPACE || vars._GITHUB_PACKAGES_USERNAME || github.repository_owner }}/matomo-sshd
+    AZURECR_TAG: ${{ vars.AZURECR_REGISTRY_NAME }}.azurecr.io/matomo-sshd
+    DOCKER_TAG: docker.io/${{ vars.DOCKER_HUB_USERNAME }}/matomo-sshd
+    IMAGE_NAME: matomo-sshd
+  
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout the repo
+          uses: actions/checkout@v2
+  
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v1
+  
+        - uses: thefringeninja/action-minver@2.0.0-preview1
+          id: minver
+          with:
+            auto-increment: patch
+            default-pre-release-phase: preview
+            minimum-major-minor: 0.0
+            tag-prefix: v
+            verbosity: info
+  
+        - name: Docker meta
+          id: meta
+          uses: docker/metadata-action@v5
+          with:
+            images: |
+              ${{ env.GITHUB_PACKAGES_PASSWORD != '' && env.GHCR_TAG || '' }}
+              ${{ env.AZURECR_PASSWORD != '' && env.AZURECR_TAG || '' }}
+              ${{ env.DOCKER_HUB_PASSWORD != '' && env.DOCKER_TAG || '' }}
+            flavor: |
+              latest=auto
+            labels: |
+              org.opencontainers.image.version=${{ steps.minver.outputs.version }}
+              org.opencontainers.image.licenses=MIT
+              org.opencontainers.image.description=A Docker image for an OpenSSH server
+            tags: |
+              type=raw,value=latest
+              type=ref,event=pr
+              type=ref,event=tag
+              type=raw,value=${{ steps.minver.outputs.version }}
+              type=sha,format=long,pattern={{sha}},prefix=
+              type=sha,format=short,prefix=
+              type=schedule
+              type=schedule,pattern=nightly
+              type=schedule,pattern={{date 'YYYYMMDD'}}
+  
+        - name: Login GitHub Container Registry
+          uses: docker/login-action@v3
+          with:
+            registry: ghcr.io
+            username: ${{ env.GITHUB_PACKAGES_USERNAME }}
+            password: ${{ env.GITHUB_PACKAGES_PASSWORD }}
+  
+        - name: Login Azure Container Registry
+          if: ${{ env.AZURECR_PASSWORD != '' }}
+          uses: docker/login-action@v3
+          with:
+            registry: ${{ env.AZURECR_REGISTRY_NAME }}.azurecr.io
+            username: ${{ env.AZURECR_USERNAME }}
+            password: ${{ env.AZURECR_PASSWORD }}
+  
+        - name: Login Docker Hub Registry
+          if: ${{ env.DOCKER_HUB_PASSWORD != '' }}
+          uses: docker/login-action@v3
+          with:
+            username: ${{ env.DOCKER_HUB_USERNAME }}
+            password: ${{ env.DOCKER_HUB_PASSWORD }}
+  
+        - name: Build & push the Docker image
+          uses: docker/build-push-action@v3
+          with:
+            context: .
+            pull: true
+            push: true
+            tags: ${{ steps.meta.outputs.tags }}
+            labels: ${{ steps.meta.outputs.labels }}
+            file: fpm/Dockerfile
+            platforms: linux/amd64,linux/arm64
+            cache-from: type=gha
+            cache-to: type=gha,mode=max
+  
+        - name: Azure WebApp
+          uses: Azure/webapps-deploy@v3.0.1
+          with:
+            # Name of the Azure Web App
+            app-name: mymatomo
+            # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
+            publish-profile: ${{ secrets.PUBLISH_SETTINGS }} # optional
+            # Enter an existing Slot other than the Production slot
+            # Applies to Web App only: Path to package or folder. *.zip, *.war, *.jar or a folder to deploy
+            images: iamtheantitwink.azurecr.io/matomo-sshd:${{ github.sha }}  # optional
+            # Applies to Web App Containers only: Path of the Docker-Compose file. Should be a fully qualified path or relative to the default working directory. Required for multi-container scenario
+            # Restart the app service after deployment
+            restart: true # optional
