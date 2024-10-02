@@ -89,6 +89,17 @@ RUN set -ex; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $fetchDeps; \
 	rm -rf /var/lib/apt/lists/*
 
+# Start and enable SSH
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends dialog \
+    && apt-get install -y --no-install-recommends openssh-server \
+    && echo "root:Docker!" | chpasswd  \
+    && chmod +x /entrypoint \
+    && mkdir -p /run/sshd \
+	&& apt-get purge -y \
+	&& rm -rf /var/lib/apt/lists/*
+COPY sshd_config /etc/ssh/
+
 COPY php.ini /usr/local/etc/php/conf.d/php-matomo.ini
 
 COPY docker-entrypoint.sh /entrypoint.sh
