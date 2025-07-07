@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 ENV PHP_MEMORY_LIMIT=256M
 
@@ -31,7 +31,7 @@ RUN set -ex; \
 	\
 # pecl will claim success even if one install fails, so we need to perform each install separately
 	pecl install APCu-5.1.24; \
-	pecl install redis-6.1.0; \
+	pecl install redis-6.2.0; \
 	\
 	docker-php-ext-enable \
 		apcu \
