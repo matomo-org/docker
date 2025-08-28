@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 ENV PHP_MEMORY_LIMIT=256M
 
@@ -24,7 +24,6 @@ RUN set -ex; \
 		bcmath \
 		ldap \
 		mysqli \
-		opcache \
 		pdo_mysql \
 		zip \
 	; \
