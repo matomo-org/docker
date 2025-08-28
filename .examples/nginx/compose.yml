@@ -36,6 +36,8 @@ services:
   web:
     image: nginx:alpine-slim
     restart: always
+    depends_on:
+      - app
     volumes:
       - matomo:/var/www/html:z,ro
       # see https://github.com/matomo-org/matomo-nginx
