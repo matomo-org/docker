@@ -2,15 +2,8 @@
 
 [![GitHub CI build status badge](https://github.com/matomo-org/docker/workflows/GitHub%20CI/badge.svg)](https://github.com/matomo-org/docker/actions?query=workflow%3A%22GitHub+CI%22)
 [![update.sh build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/update.sh/job/matomo.svg?label=Automated%20update.sh)](https://doi-janky.infosiftr.net/job/update.sh/job/matomo/)
-[![amd64 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/amd64/job/matomo.svg?label=amd64)](https://doi-janky.infosiftr.net/job/multiarch/job/amd64/job/matomo)
-[![arm32v5 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm32v5/job/matomo.svg?label=arm32v5)](https://doi-janky.infosiftr.net/job/multiarch/job/arm32v5/job/matomo)
-[![arm32v6 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm32v6/job/matomo.svg?label=arm32v6)](https://doi-janky.infosiftr.net/job/multiarch/job/arm32v6/job/matomo)
-[![arm32v7 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm32v7/job/matomo.svg?label=arm32v7)](https://doi-janky.infosiftr.net/job/multiarch/job/arm32v7/job/matomo)
-[![arm64v8 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/arm64v8/job/matomo.svg?label=arm64v8)](https://doi-janky.infosiftr.net/job/multiarch/job/arm64v8/job/matomo)
-[![i386 build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/i386/job/matomo.svg?label=i386)](https://doi-janky.infosiftr.net/job/multiarch/job/i386/job/matomo)
-[![mips64le build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/mips64le/job/matomo.svg?label=mips64le)](https://doi-janky.infosiftr.net/job/multiarch/job/mips64le/job/matomo)
-[![ppc64le build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/ppc64le/job/matomo.svg?label=ppc64le)](https://doi-janky.infosiftr.net/job/multiarch/job/ppc64le/job/matomo)
-[![s390x build status badge](https://img.shields.io/jenkins/s/https/doi-janky.infosiftr.net/job/multiarch/job/s390x/job/matomo.svg?label=s390x)](https://doi-janky.infosiftr.net/job/multiarch/job/s390x/job/matomo)
+[![Docker Pulls](https://img.shields.io/docker/pulls/library/matomo)](https://hub.docker.com/_/matomo)
+[![Docker Image Version](https://img.shields.io/docker/v/library/matomo?sort=semver&logo=matomo&label=Matomo)](https://hub.docker.com/_/matomo/tags)
 
 <img align="right" width="300px" src="https://matomo.org/wp-content/themes/website-child/assets/img/media/matomo.png" alt="Matomo logo"></img>
 [Matomo](https://matomo.org/) (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics:
@@ -21,7 +14,7 @@
 - User-centric insights
 - Customisable and extensible
 
-## How to use this image
+# How to use this image
 
 You can run the Matomo container and service like so:
 
@@ -35,7 +28,7 @@ This assumes you've already launched a suitable MySQL or MariaDB database contai
 
 Use a Docker volume to keep persistent data:
 
-```console
+```bash
 docker run -d -p 8080:80 --link some-mysql:db -v matomo:/var/www/html matomo
 ```
 
@@ -65,14 +58,14 @@ The PHP memory limit can be configured with the following environment variable:
 
 - `PHP_MEMORY_LIMIT`
 
-## Docker-compose examples and log import instructions
+## Docker Compose examples and log import instructions
 
-A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/docker-compose.yml), a more complete [example can be found at IndieHosters/piwik](https://github.com/libresh/compose-matomo/blob/master/docker-compose.yml).
+A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/docker-compose.yml).
 
 If you want to use the import logs script, you can then run the following container as needed, in order to execute the python import logs script:
 
-```
-docker run --rm --volumes-from="matomo_app_1" --link matomo_app_1 python:2-alpine python /var/www/html/misc/log-analytics/import_logs.py --url=http://ip.of.your.matomo --login=yourlogin --password=yourpassword --idsite=1 --recorders=4 /var/www/html/logs/access.log
+```bash
+docker run --rm --volumes-from="matomo-app-1" --link matomo-app-1 python:3-alpine python /var/www/html/misc/log-analytics/import_logs.py --url=http://ip.of.your.matomo.example --login=yourlogin --password=yourpassword --idsite=1 --recorders=4 /var/www/html/logs/access.log
 ```
 
 ## Contribute
@@ -83,5 +76,4 @@ We'd love to hear your feedback and suggestions in the issue tracker: [github.co
 
 ## GeoIP
 
-~~This product includes GeoLite data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).~~
-https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
+~~This product includes GeoLite data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).~~ https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/
