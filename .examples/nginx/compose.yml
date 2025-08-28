@@ -1,5 +1,4 @@
-version: "3"
-
+---
 services:
   db:
     image: mariadb:lts
@@ -8,11 +7,13 @@ services:
     volumes:
       - db:/var/lib/mysql:Z
     environment:
-      - MYSQL_ROOT_PASSWORD=
       - MARIADB_AUTO_UPGRADE=1
+      - MARIADB_DATABASE=matomo
       - MARIADB_DISABLE_UPGRADE_BACKUP=1
-    env_file:
-      - ./db.env
+      - MARIADB_INITDB_SKIP_TZINFO=1
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_USER=matomo
 
   app:
     image: matomo:fpm-alpine
@@ -24,13 +25,16 @@ services:
       # - ./logs:/var/www/html/logs:z
       - matomo:/var/www/html:z
     environment:
+      - MATOMO_DATABASE_ADAPTER=mysql
+      - MATOMO_DATABASE_DBNAME=matomo
       - MATOMO_DATABASE_HOST=db
+      - MATOMO_DATABASE_PASSWORD=${MARIADB_PASSWORD}
+      - MATOMO_DATABASE_TABLES_PREFIX=matomo_
+      - MATOMO_DATABASE_USERNAME=matomo
       - PHP_MEMORY_LIMIT=2048M
-    env_file:
-      - ./db.env
 
   web:
-    image: nginx:alpine
+    image: nginx:alpine-slim
     restart: always
     volumes:
       - matomo:/var/www/html:z,ro
