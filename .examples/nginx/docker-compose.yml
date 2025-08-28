@@ -17,7 +17,7 @@ services:
   app:
     image: matomo:fpm-alpine
     restart: always
-    links:
+    depends_on:
       - db
     volumes:
       # - ./config:/var/www/html/config:z
