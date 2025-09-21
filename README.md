@@ -60,7 +60,7 @@ The PHP memory limit can be configured with the following environment variable:
 
 ## Docker Compose examples and log import instructions
 
-A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/docker-compose.yml).
+A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/compose.yml).
 
 If you want to use the import logs script, you can then run the following container as needed, in order to execute the python import logs script:
 
