@@ -63,7 +63,7 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-ENV MATOMO_VERSION 5.5.1
+ENV MATOMO_VERSION 5.5.2
 
 RUN set -ex; \
 	fetchDeps=" \
