@@ -57,7 +57,7 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-ENV MATOMO_VERSION 5.6.1
+ENV MATOMO_VERSION 5.6.2
 
 RUN set -ex; \
 	apk add --no-cache --virtual .fetch-deps \
