@@ -1,6 +1,8 @@
 ---
 name: GitHub CI
 
+permissions: {}
+
 on:
   pull_request:
   push:
