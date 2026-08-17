@@ -83,7 +83,7 @@ COPY docker-entrypoint.sh /entrypoint.sh
 
 # WORKDIR is /var/www/html (inherited via "FROM php")
 # "/entrypoint.sh" will populate it at container startup from /usr/src/matomo
-VOLUME /var/www/html
+
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["php-fpm"]
