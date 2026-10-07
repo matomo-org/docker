@@ -18,6 +18,10 @@ file_env() {
 	if [ -n "${varValue}" ]; then
 		export "$var"="${varValue}"
 	elif [ -n "${fileVarValue}" ]; then
+		if [ ! -f "${fileVarValue}" ]; then
+			echo >&2 "error: secret file for $var not found: '${fileVarValue}'"
+			exit 1
+		fi
 		export "$var"="$(cat "${fileVarValue}")"
 	elif [ -n "${def}" ]; then
 		export "$var"="$def"
