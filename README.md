@@ -58,6 +58,22 @@ The PHP memory limit can be configured with the following environment variable:
 
 - `PHP_MEMORY_LIMIT`
 
+## Upgrading
+
+Matomo lives in the volume on `/var/www/html`, which the container fills from the image only if it doesn't contain Matomo yet. A newer image alone therefore doesn't upgrade an installed Matomo. There are two ways to do it:
+
+- **In Matomo**, as before: the one-click update in the web interface (or `php console core:update` after replacing the files yourself). The version of the image doesn't matter then.
+- **With the image**: set `MATOMO_AUTO_UPGRADE=1` and start a newer image on the same volume, e.g. `docker run -d -e MATOMO_AUTO_UPGRADE=1 -v matomo:/var/www/html --link some-mysql:db matomo`.
+
+With `MATOMO_AUTO_UPGRADE=1`, every start of the container does this for an installed Matomo (one with `config/config.ini.php`):
+
+1. If the image has a newer version of Matomo than the volume, it copies the files of the new release over those in the volume, and deletes the files that the new release no longer has: exactly those that the manifest of the installed release (`config/manifest.inc.php`) lists and the new one doesn't, unless they were modified. Everything else stays, like `config/config.ini.php`, plugins from the Marketplace, `misc/user/`, GeoIP databases, the containers of the Tag Manager in `js/`, `tmp/` and files of your own. Changes to files of the release are lost, as with the one-click update.
+2. It runs `php console core:update --yes` and `php console custom-matomo-js:update`.
+
+Both steps run as the user of Apache or PHP-FPM (`www-data`, or `APACHE_RUN_USER`), or as the user of the container if it doesn't run as root. It never downgrades: if the volume has a newer Matomo than the image (e.g. after a one-click update), it leaves it alone with a warning. When several containers share the volume, one upgrades it and the others wait for it (with a lock on `tmp/matomo-upgrade.lock`, so `tmp/` must be on the shared volume). If a step fails, the container logs the error and starts anyway; Matomo then asks for the database upgrade in the browser, as after a manual upgrade, and the next start tries again. A container that doesn't run as root upgrades the volume only if it can write to it.
+
+Back up the database and the volume before upgrading. The web server starts only after the database upgrade, which takes a while for big databases, especially with a new major version of Matomo (use a tag like `matomo:5` to stay on one). For a large instance, better upgrade it manually with Matomo's [tips for high traffic servers](https://matomo.org/faq/on-premise/how-to-upgrade-matomo-to-the-latest-release/), e.g. in [maintenance mode](https://matomo.org/faq/how-to/faq_111/) and with a single container.
+
 ## Docker Compose examples and log import instructions
 
 A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/compose.yml).

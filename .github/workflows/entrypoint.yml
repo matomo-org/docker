@@ -1,0 +1,42 @@
+---
+name: Entrypoint tests
+
+permissions: {}
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: 0 0 * * 0
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: 'bash -Eeuo pipefail -x {0}'
+
+jobs:
+  test:
+    name: ${{ matrix.variant }} from ${{ matrix.from }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [apache, fpm, fpm-alpine]
+        # the previous release on Docker Hub (all tests), and an older one whose upgrade includes database migrations
+        from: [previous, 5.10.1]
+    env:
+      VARIANT: ${{ matrix.variant }}
+      FROM: ${{ matrix.from }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Build
+        run: docker build --pull --tag "matomo-test:$VARIANT" "$VARIANT"
+      - name: Test
+        run: |
+          if [ "$FROM" = previous ]; then
+            .github/tests/entrypoint.sh "$VARIANT" "matomo-test:$VARIANT"
+          else
+            PREVIOUS_VERSION="$FROM" .github/tests/entrypoint.sh "$VARIANT" "matomo-test:$VARIANT" upgrade
+          fi
