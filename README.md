@@ -58,6 +58,12 @@ The PHP memory limit can be configured with the following environment variable:
 
 - `PHP_MEMORY_LIMIT`
 
+## Upgrading
+
+Matomo is copied into the volume only on the first start, so a newer image doesn't upgrade an existing installation. Either use the one-click update in Matomo, or set `MATOMO_AUTO_UPGRADE=1`: if the image contains a newer Matomo than the volume, the container replaces the Matomo files when it starts, removes the files that the new release doesn't ship anymore and upgrades the database. Your configuration, plugins and other files are kept, and a newer Matomo in the volume is never downgraded.
+
+Back up the database and the volume before upgrading. Large instances are better upgraded by hand, see [Matomo's FAQ](https://matomo.org/faq/on-premise/how-to-upgrade-matomo-to-the-latest-release/).
+
 ## Docker Compose examples and log import instructions
 
 A minimal set-up using docker-compose is available in the [.examples folder](.examples/nginx/compose.yml).
