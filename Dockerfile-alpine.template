@@ -1,5 +1,7 @@
 FROM php:8.4-%%VARIANT%%
 
+LABEL org.opencontainers.image.source="https://github.com/matomo-org/matomo"
+
 ENV PHP_MEMORY_LIMIT=256M
 
 RUN set -ex; \
